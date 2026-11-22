@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bora Falar | Portugués brasileño</title>
+<meta name="description" content="Clases y cursos de portugués brasileño para hispanohablantes: clases privadas, cursos en línea y recursos gratis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;700;900&family=Nunito+Sans:wght@400;600;700&display=swap">
+<style>
+/* Concept: a sunny Brazilian street. Ultramarine ink, mango sun, leaf green, with the calçadão wave as the recurring pattern. */
+:root{
+  --bg:#F6F8FD; --surface:#FFFFFF; --ink:#0B1B4D; --muted:#53608A; --line:#DDE3F3;
+  --blue:#002776; --blue-ink:#FFFFFF; --sun:#FFDF00; --sun-ink:#2B2300; --leaf:#009C3B; --acai:#B0145E;
+  --f-display:'Gabarito',system-ui,sans-serif; --f-body:'Nunito Sans',system-ui,sans-serif;
+  --r:22px; --shadow:0 2px 4px rgba(11,27,77,.06),0 14px 34px rgba(11,27,77,.10);
+  --wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='24' viewBox='0 0 80 24'%3E%3Cpath d='M0 12c10-12 20-12 30 0s20 12 30 0 15-9 20-6v18H0z' fill='%23009C3B'/%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#070E26; --surface:#0F1A40; --ink:#EEF2FF; --muted:#A3AFD6; --line:#223163;
+    --blue:#7F95FF; --blue-ink:#071033; --sun:#FFC933; --leaf:#3FD08E; --acai:#FF6AA9; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#070E26; --surface:#0F1A40; --ink:#EEF2FF; --muted:#A3AFD6; --line:#223163;
+  --blue:#7F95FF; --blue-ink:#071033; --sun:#FFC933; --leaf:#3FD08E; --acai:#FF6AA9; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);line-height:1.08;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(38px,6.4vw,68px);font-weight:900}
+h2{font-size:clamp(28px,4.2vw,44px);font-weight:900}
+h3{font-size:22px;font-weight:700}
+p{margin:0}
+a{color:inherit}
+img{max-width:100%;display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:8px}
+[hidden]{display:none!important}
+.sr{position:absolute;left:-9999px}
+.wrap{max-width:1160px;margin:0 auto}
+section{padding-block:72px}
+.eyebrow{font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+.lead{font-size:19px;color:var(--muted);max-width:56ch}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--ink);background:transparent;color:var(--ink);padding:12px 24px;border-radius:999px;font-weight:700;cursor:pointer;text-decoration:none;font-size:16px;font-family:var(--f-body);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.blue{background:var(--blue);border-color:var(--blue);color:var(--blue-ink)}
+.btn.sun{background:var(--sun);border-color:var(--sun);color:var(--sun-ink)}
+.btn.sm{padding:8px 16px;font-size:14px}
+.btn.ghost{border-color:var(--line)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* top strip + header */
+.strip{margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:9px max(16px,env(safe-area-inset-right,0px)) 9px max(16px,env(safe-area-inset-left,0px));background:#007A33;color:#fff;text-align:center;font-weight:700;font-size:15px}
+.strip a{color:inherit;text-decoration-thickness:2px;text-underline-offset:3px;margin-left:6px}
+header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1160px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:12px max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px))}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-display);font-weight:900;font-size:24px}
+.logo i{width:34px;height:34px;border-radius:50%;background:var(--sun);display:block;position:relative;overflow:hidden;flex:none}
+.logo i::after{content:"";position:absolute;left:-4px;right:-4px;bottom:-2px;height:15px;background:var(--wave) repeat-x;background-size:34px 12px}
+.menu{display:flex;gap:4px;margin-left:auto;align-items:center}
+.menu>li,.menu{list-style:none;padding:0;margin-block:0}
+.menu>li{position:relative}
+.menu>li>a,.menu>li>button{display:block;border:0;background:none;padding:9px 13px;border-radius:999px;text-decoration:none;font-weight:700;font-size:15px;cursor:pointer}
+.menu>li>a:hover,.menu>li>button:hover{background:color-mix(in srgb,var(--blue) 12%,transparent)}
+.sub{position:absolute;left:0;top:100%;min-width:230px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:8px;list-style:none;margin:6px 0 0;display:none}
+.menu>li:hover>.sub,.menu>li.open>.sub,.menu>li:focus-within>.sub{display:block}
+.sub a{display:block;padding:9px 12px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px}
+.sub a:hover{background:color-mix(in srgb,var(--blue) 12%,transparent)}
+.burger{display:none;margin-left:auto;border:2px solid var(--line);background:var(--surface);border-radius:12px;width:44px;height:44px;cursor:pointer}
+.burger svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round}
+@media(max-width:900px){
+  .burger{display:block}
+  .menu{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--surface);border-bottom:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px));margin:0}
+  header.nav.open .menu{display:flex}
+  .sub{position:static;display:block;border:0;box-shadow:none;margin:0;padding:0 0 0 12px;background:none}
+  .menu>li>button{text-align:left;width:100%}
+}
+
+/* hero */
+.hero{padding-block:48px 72px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:44px;align-items:center}
+.hero h1 span{color:var(--blue)}
+.hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--sun) 62% 92%,transparent 92%)}
+.hero .lead{margin-block:18px 26px}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.hero-img{position:relative}
+.hero-img .slot{border-radius:46% 46% 24px 24px / 38% 38% 24px 24px;aspect-ratio:4/5;box-shadow:var(--shadow)}
+.sticker{position:absolute;left:-14px;bottom:28px;background:var(--sun);color:var(--sun-ink);font-family:var(--f-display);font-weight:900;padding:10px 18px;border-radius:18px 18px 18px 4px;font-size:22px;transform:rotate(-4deg);box-shadow:var(--shadow);z-index:2}
+@media(max-width:860px){.hero{grid-template-columns:minmax(0,1fr)}.hero-img{max-width:420px}}
+
+/* slots (editable images) */
+.slot{position:relative;overflow:hidden;background:var(--line)}
+.slot>img{width:100%;height:100%;object-fit:cover}
+.slot .edit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5;background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:10px 18px;font-weight:700;cursor:pointer;box-shadow:var(--shadow);font-size:15px;white-space:nowrap}
+body.admin .slot{outline:3px dashed var(--sun);outline-offset:-3px}
+
+/* wave divider */
+.wave{height:26px;background:var(--wave) repeat-x;background-size:80px 26px;opacity:.9;margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)))}
+
+/* services */
+.head{display:grid;gap:12px;margin-bottom:34px}
+.head.center{text-align:center;justify-items:center}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.card .slot{aspect-ratio:4/3;border-radius:0}
+.card .body{padding:22px;display:grid;gap:10px;align-content:start;flex:1}
+.card p{color:var(--muted)}
+.card .more{margin-top:auto;padding-top:6px;font-weight:800;color:var(--blue);text-decoration:none;display:inline-flex;gap:6px}
+.card .more:hover{text-decoration:underline}
+@media(max-width:900px){.cards{grid-template-columns:minmax(0,1fr)}}
+.ready{text-align:center;margin-top:36px}
+
+/* courses */
+.courses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.course{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:grid;gap:10px;align-content:start}
+.course p{color:var(--muted);font-size:16px}
+.chip{display:inline-block;width:max-content;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 11px;border-radius:999px;background:color-mix(in srgb,var(--leaf) 16%,var(--surface));color:var(--leaf)}
+.chip.b{background:color-mix(in srgb,var(--blue) 14%,var(--surface));color:var(--blue)}
+.chip.s{background:color-mix(in srgb,var(--sun) 30%,var(--surface));color:var(--ink)}
+@media(max-width:900px){.courses{grid-template-columns:minmax(0,1fr)}}
+@media(min-width:620px) and (max-width:900px){.courses{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* about */
+.about{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:48px;align-items:center}
+.about .slot{aspect-ratio:1;border-radius:50%;max-width:440px;width:100%;box-shadow:var(--shadow)}
+.about .dots{position:absolute}
+.about-fig{position:relative;justify-self:center;width:100%;max-width:440px}
+.about-fig::before{content:"";position:absolute;right:-18px;top:-18px;width:120px;height:120px;border-radius:50%;background:var(--sun);z-index:0}
+.about-fig .slot{position:relative;z-index:1}
+.about p+p{margin-top:12px}
+.links{display:flex;gap:18px;flex-wrap:wrap;margin-top:18px;font-weight:800}
+.links a{color:var(--blue)}
+@media(max-width:860px){.about{grid-template-columns:minmax(0,1fr)}.about-fig::before{right:0;top:-14px;width:96px;height:96px}}
+
+/* club */
+.club{background:var(--ink);color:#fff;border-radius:34px;padding:clamp(24px,5vw,56px);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:36px;align-items:center}
+.club .eyebrow{color:var(--sun)}
+.club p{color:#C9D3F7;margin-block:12px 22px}
+.club ul{list-style:none;padding:0;margin:0 0 22px;display:grid;gap:8px}
+.club li::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--sun);margin-right:10px}
+.club .slot{aspect-ratio:16/10;border-radius:20px}
+@media(max-width:860px){.club{grid-template-columns:minmax(0,1fr)}}
+
+/* outcomes */
+.outcomes{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:40px;align-items:center}
+.outcomes .slot{aspect-ratio:1;border-radius:var(--r);box-shadow:var(--shadow)}
+.points{display:grid;gap:14px}
+.point{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.point b{font-family:var(--f-display);font-size:20px;display:block;margin-bottom:2px}
+.point span{color:var(--muted)}
+@media(max-width:860px){.outcomes{grid-template-columns:minmax(0,1fr)}}
+
+/* newsletter */
+.news{position:relative;border-radius:34px;overflow:hidden;color:#fff;padding:clamp(28px,6vw,64px);text-align:center;isolation:isolate}
+.news .slot{position:absolute;inset:0;z-index:-1;border-radius:0}
+.news .slot::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(5,14,60,.66),rgba(5,14,60,.78))}
+.news .slot .edit{z-index:6;top:16px;left:auto;right:16px;transform:none}
+.news form{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:22px}
+.news .inp{min-width:0;flex:1 1 200px;max-width:280px}
+.inp{width:100%;padding:13px 16px;border-radius:14px;border:2px solid var(--line);background:var(--surface);color:var(--ink)}
+.field{display:grid;gap:6px;margin-bottom:14px}
+.field label{font-weight:700;font-size:14px}
+.note{font-size:14px;margin-top:12px;color:#D9E0FF}
+
+/* contact + footer */
+.contact{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:40px}
+.contact form{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--shadow)}
+.contact textarea.inp{min-height:110px;resize:vertical}
+@media(max-width:860px){.contact{grid-template-columns:minmax(0,1fr)}}
+footer{border-top:1px solid var(--line);padding-block:44px 120px;margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px))}
+.foot{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.2fr) repeat(3,minmax(0,1fr));gap:28px}
+.foot ul{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:6px}
+.foot a{text-decoration:none;color:var(--muted)}
+.foot a:hover{color:var(--blue);text-decoration:underline}
+.foot h4{margin:0;font-family:var(--f-display);font-size:16px}
+.copy{max-width:1160px;margin:30px auto 0;color:var(--muted);font-size:14px;display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+.copy button{border:0;background:none;color:var(--muted);cursor:pointer;text-decoration:underline;font-size:14px;padding:4px}
+@media(max-width:860px){.foot{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* admin bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--ink);color:var(--bg);padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center}
+.bar b{font-family:var(--f-display)}
+.bar .btn{border-color:color-mix(in srgb,var(--bg) 40%,transparent);color:var(--bg)}
+.bar .btn.sun{color:var(--sun-ink);border-color:var(--sun)}
+
+/* modal + toast */
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(5,10,35,.62);display:grid;place-items:center;padding:16px;overflow:auto}
+.modal{background:var(--surface);color:var(--ink);border-radius:24px;max-width:600px;width:100%;max-height:calc(100% - 8px);overflow:auto;padding:26px;box-shadow:var(--shadow)}
+.modal h2{font-size:28px;margin-bottom:14px}
+.modal h3{font-size:18px;margin:18px 0 8px}
+.preview{aspect-ratio:16/9;width:100%;border-radius:14px;object-fit:cover;background:var(--line);margin-bottom:14px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.hint{font-size:14px;color:var(--muted)}
+.opt{display:flex;gap:10px;align-items:center;padding:11px 14px;border:2px solid var(--line);border-radius:14px;margin:8px 0;cursor:pointer}
+.opt:has(input:checked){border-color:var(--blue);background:color-mix(in srgb,var(--blue) 10%,var(--surface))}
+.progress{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:16px}
+.progress i{display:block;height:100%;background:var(--leaf)}
+.toasts{position:fixed;left:0;right:0;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:70;display:flex;flex-direction:column;align-items:center;gap:8px;padding-inline:16px;pointer-events:none}
+.toast{background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:14px;box-shadow:var(--shadow);font-weight:700;max-width:440px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn:hover{transform:none}}
+
+.btn{position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s}
+.btn:active{transform:scale(.94)}.btn:hover{box-shadow:0 6px 16px rgba(0,39,118,.22)}
+.rip{position:absolute;border-radius:50%;background:currentColor;opacity:.28;transform:scale(0);animation:rip .6s ease-out;pointer-events:none}
+@keyframes rip{to{transform:scale(7);opacity:0}}
+.card,.course{transition:transform .2s,box-shadow .2s}.card:hover,.course:hover{transform:translateY(-4px)}
+.wa{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:35;background:#009C3B;color:#fff;font-weight:800;padding:12px 18px;border-radius:999px;text-decoration:none;box-shadow:var(--shadow);animation:pop 2.4s ease-in-out infinite}
+@keyframes pop{50%{transform:scale(1.07)}}
+#payCards{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.ava{width:64px;height:64px;border-radius:50%;object-fit:cover;background:var(--line)}
+body.admin [data-t]{outline:1px dashed color-mix(in srgb,var(--sun) 80%,transparent);outline-offset:2px;cursor:text}
+.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}
+@media(prefers-reduced-motion:reduce){.rip{display:none}.wa{animation:none}.card:hover,.course:hover{transform:none}}
+</style>
+</head>
+<body>
+<a class="sr" href="#main">Saltar al contenido</a>
+<div class="strip">Curso gratis de pronunciación en 7 días <a href="#boletin">Quiero mi lugar</a></div>
+<header class="nav" id="nav">
+  <div class="nav-in">
+    <a class="logo" href="#inicio" aria-label="Bora Falar, inicio"><i aria-hidden="true"></i>Bora Falar</a>
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <ul class="menu" id="menu">
+      <li class="has-sub"><button type="button" aria-haspopup="true">Clases</button>
+        <ul class="sub"><li><a href="#servicios">Clases privadas</a></li><li><a href="#servicios">Clases en grupo</a></li></ul></li>
+      <li class="has-sub"><button type="button" aria-haspopup="true">Cursos</button>
+        <ul class="sub"><li><a href="#cursos">Todos los cursos</a></li><li><a href="#cursos">Portugués para viajar</a></li><li><a href="#cursos">Conjugación exprés</a></li></ul></li>
+      <li class="has-sub"><button type="button" aria-haspopup="true">Recursos</button>
+        <ul class="sub"><li><a href="#boletin">Pronunciación gratis</a></li><li><a href="#club">Club de video</a></li><li><a href="#" data-open="test">Prueba de nivel</a></li></ul></li>
+      <li><a href="#pagos">Pagos</a></li><li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+      <li><label class="sr" for="lang">Idioma</label><select id="lang" class="inp" style="padding:8px 10px;width:auto"><option value="es">ES</option><option value="en">EN</option><option value="pt">PT</option><option value="fr">FR</option></select></li><li><a class="btn blue sm" href="#" data-open="portal">Acceso alumnos</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <div class="hero" id="inicio">
+    <div>
+      <p class="eyebrow">Portugués brasileño para hispanohablantes</p>
+      <h1>Habla con <span>sotaque</span> desde la <em>primera clase</em></h1>
+      <p class="lead">Clases y cursos pensados para quien ya habla español: aprovechamos lo que ya sabes y vamos directo a lo que se usa en Brasil. También te preparamos para el examen Celpe-Bras.</p>
+      <div class="cta-row"><a class="btn blue" href="#servicios">Empieza aquí</a><a class="btn" href="#" data-open="test">Haz la prueba de nivel</a></div>
+    </div>
+    <div class="hero-img">
+      <div class="slot" data-slot="hero"><img alt="" width="800" height="1000"></div>
+      <div class="sticker" aria-hidden="true">Oi, tudo bem?</div>
+    </div>
+  </div>
+</main>
+<div class="wave" aria-hidden="true"></div>
+
+<div class="wrap">
+  <section id="servicios">
+    <div class="head center"><p class="eyebrow">Aprende con nosotros</p><h2>Tres maneras de empezar</h2></div>
+    <div class="cards">
+      <article class="card"><div class="slot" data-slot="c1"><img alt="" width="800" height="600"></div><div class="body"><span class="chip">Gratis</span><h3>Recursos gratuitos</h3><p>Curso de pronunciación, videos por nivel y la prueba de nivel para saber dónde estás.</p><a class="more" href="#boletin">Ver recursos →</a></div></article>
+      <article class="card"><div class="slot" data-slot="c2"><img alt="" width="800" height="600"></div><div class="body"><span class="chip b">A tu ritmo</span><h3>Cursos en línea</h3><p>Lecciones grabadas con ejercicios, desde cero hasta conversación fluida.</p><a class="more" href="#cursos">Ver cursos →</a></div></article>
+      <article class="card"><div class="slot" data-slot="c3"><img alt="" width="800" height="600"></div><div class="body"><span class="chip s">Contigo</span><h3>Clases privadas y en grupo</h3><p>Practica hablando, con correcciones en vivo y un plan hecho a tu medida.</p><a class="more" href="#contacto">Reservar clase →</a></div></article>
+    </div>
+    <p class="ready"><a class="btn sun" href="#cursos">¡Estoy lista, estoy listo!</a></p>
+  </section>
+
+  <section id="cursos">
+    <div class="head"><p class="eyebrow">Cursos en línea</p><h2>Elige tu punto de partida</h2><p class="lead">Cada curso tiene lecciones cortas, audio nativo y tareas con respuesta.</p></div>
+    <div class="courses"><article class="course" style="border:2px solid var(--leaf)"><span class="chip s">Celpe-Bras · US$15</span><h3>Preparatoria para Celpe-Bras</h3><p>Prepárate para el examen Celpe-Bras: producción oral y escrita, comprensión de textos y práctica con tareas como las del examen.</p><button class="btn blue sm" data-open="enroll">Inscribirme · US$15</button></article>
+      <article class="course"><span class="chip">A1</span><h3>Básico desde cero</h3><p>Saludos, números, presentarte y sobrevivir en tus primeras conversaciones.</p></article>
+      <article class="course"><span class="chip">A2</span><h3>Pre-intermedio</h3><p>Pasado, futuro y vocabulario de la vida diaria con situaciones reales.</p></article>
+      <article class="course"><span class="chip b">B1</span><h3>Gramática hablando</h3><p>La gramática que sí necesitas, practicada dentro de conversaciones.</p></article>
+      <article class="course"><span class="chip b">Todos</span><h3>Conjugación exprés</h3><p>Los verbos más usados, con trucos para no confundirlos con el español.</p></article>
+      <article class="course"><span class="chip s">Viaje</span><h3>Portugués para viajar</h3><p>Restaurante, transporte, hotel y playa: frases listas para usar.</p></article>
+      <article class="course"><span class="chip s">Gratis</span><h3>Pronunciación en 7 días</h3><p>Nasales, la «r», la «lh» y el ritmo que hace que suenes brasileño.</p></article>
+    </div>
+  </section>
+
+  <section id="pagos"><div class="head"><p class="eyebrow">Pagos</p><h2>Cómo pagar tu clase</h2><p class="lead">Elige transferencia, PayPal o Wise. Cuando pagues, la profesora confirma y te envía tu clase por Google Meet.</p></div><div class="points" id="payCards"></div><p class="ready"><button class="btn sun" data-open="enroll">Inscribirme y pagar</button></p></section>
+
+  <section id="sobre-mi">
+    <div class="about">
+      <div class="about-fig"><div class="slot" data-slot="about"><img alt="" width="800" height="800"></div></div>
+      <div>
+        <p class="eyebrow">Sobre mí</p>
+        <h2 style="margin-block:10px 16px">Tu profesora de portugués</h2>
+        <p>Enseño portugués brasileño a hispanohablantes porque sé exactamente dónde tropiezan: los falsos amigos, los sonidos nasales y el miedo a hablar.</p>
+        <p>Mis clases son prácticas, cercanas y con mucho español cuando hace falta. Aquí vas a hablar desde el primer día.</p>
+        <div class="links"><a href="#cursos">Ver cursos</a><a href="#club">Club de video</a><a href="#contacto">Escríbeme</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="club" style="padding-block:24px 72px">
+    <div class="club">
+      <div>
+        <p class="eyebrow">Club de video</p>
+        <h2>Cientos de lecciones, una por una</h2>
+        <p>Videos cortos ordenados por nivel: pronunciación, gramática, vocabulario y cultura de Brasil. Cada semana recibes la transcripción por correo.</p>
+        <ul><li>Organizados por nivel, de A1 a B2</li><li>Transcripción semanal en tu correo</li><li>Cultura y expresiones del día a día</li></ul>
+        <a class="btn sun" href="#boletin">Quiero unirme</a>
+      </div>
+      <div class="slot" data-slot="club"><img alt="" width="960" height="600"></div>
+    </div>
+  </section>
+
+  <section id="resultados" style="padding-top:0">
+    <div class="outcomes">
+      <div class="slot" data-slot="outcome"><img alt="" width="800" height="800"></div>
+      <div>
+        <p class="eyebrow">Lo que vas a lograr</p>
+        <h2 style="margin-block:10px 20px">Hablar, entender y atreverte</h2>
+        <div class="points">
+          <div class="point"><b>Hablar desde la primera clase</b><span>Frases útiles desde el día uno, sin esperar a «saber más».</span></div>
+          <div class="point"><b>Entender el portugués real</b><span>Audios nativos y conversaciones como las de la calle.</span></div>
+          <div class="point"><b>Perder el miedo al error</b><span>Correcciones amables que te dejan seguir hablando.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="boletin" style="padding-top:0">
+    <div class="news">
+      <div class="slot" data-slot="news"><img alt="" width="1600" height="600"></div>
+      <h2>Recibe el curso gratis de pronunciación</h2>
+      <p style="max-width:52ch;margin:12px auto 0;color:#D9E0FF">Siete días, siete lecciones cortas, directo a tu correo. Además, consejos semanales.</p>
+      <form id="newsForm"><label class="sr" for="n-name">Nombre</label><input id="n-name" class="inp" placeholder="Tu nombre" required maxlength="60" autocomplete="name"><label class="sr" for="n-mail">Correo</label><input id="n-mail" type="email" class="inp" placeholder="Tu correo" required maxlength="80" autocomplete="email"><button class="btn sun" type="submit">Suscribirme</button></form>
+      <p class="note" id="newsNote">Los datos se guardan en este navegador hasta que conectes un servicio de correo.</p>
+    </div>
+  </section>
+
+  <section id="contacto" style="padding-top:0">
+    <div class="contact">
+      <div><p class="eyebrow">Contacto</p><h2 style="margin-block:10px 14px">Reserva tu primera clase</h2><p class="lead">Cuéntame tu nivel y tu objetivo, y te propongo un plan.</p><div class="row" style="margin-top:18px"><a class="btn sun sm" href="https://wa.me/qr/ZSNQSWKRESORH1" target="_blank" rel="noopener">WhatsApp</a><a class="btn sm" href="https://www.instagram.com/valeria.elliza?dmpr=NXpzMGUyZGMzdTd6" target="_blank" rel="noopener">Instagram</a><a class="btn sm" id="mailLink" href="#" hidden>Correo</a></div></div>
+      <form id="contactForm"><div class="field"><label for="c-name">Nombre</label><input id="c-name" class="inp" required maxlength="60" autocomplete="name"></div>
+        <div class="field"><label for="c-mail">Correo</label><input id="c-mail" type="email" class="inp" required maxlength="80" autocomplete="email"></div>
+        <div class="field"><label for="c-wa">WhatsApp</label><input id="c-wa" type="tel" class="inp" maxlength="30" autocomplete="tel" placeholder="+506 …"></div><div class="field"><label for="c-msg">Mensaje</label><textarea id="c-msg" class="inp" required maxlength="800"></textarea></div>
+        <button class="btn blue" type="submit">Enviar mensaje</button></form>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="foot">
+    <div><a class="logo" href="#inicio"><i aria-hidden="true"></i>Bora Falar</a><p class="hint" style="margin-top:10px">Portugués brasileño para hispanohablantes.</p></div>
+    <div><h4>Aprender</h4><ul><li><a href="#cursos">Cursos en línea</a></li><li><a href="#servicios">Clases privadas</a></li><li><a href="#servicios">Clases en grupo</a></li><li><a href="#" data-open="test">Prueba de nivel</a></li></ul></div>
+    <div><h4>Recursos</h4><ul><li><a href="#boletin">Pronunciación gratis</a></li><li><a href="#club">Club de video</a></li></ul></div>
+    <div><h4>Más</h4><ul><li><a href="#sobre-mi">Sobre mí</a></li><li><a href="#contacto">Contacto</a></li><li><a href="#" data-open="portal">Acceso alumnos</a></li><li><a href="https://www.instagram.com/valeria.elliza?dmpr=NXpzMGUyZGMzdTd6" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/qr/ZSNQSWKRESORH1" target="_blank" rel="noopener">WhatsApp</a></li></ul></div>
+  </div>
+  <div class="copy"><span>© <span id="yr"></span> Bora Falar. Todos los derechos reservados.</span><button type="button" data-open="login">Acceso administrador</button></div>
+</footer>
+
+<a class="wa" href="https://wa.me/qr/ZSNQSWKRESORH1" target="_blank" rel="noopener" aria-label="Escríbeme por WhatsApp">WhatsApp</a>
+<div id="google_translate_element" hidden></div>
+<div id="adminBar" class="bar" hidden></div>
+<div id="modal"></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<script id="baked" type="application/json">{}</script>
+<script>
+(function(){
+'use strict';
+/* Source snapshot taken before anything renders, used by "Descargar sitio". */
+const SRC='<!doctype html>\n'+document.documentElement.outerHTML;
+const $=(s,r)=>(r||document).querySelector(s), $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const mem={};
+const LS={get(k){try{return localStorage.getItem(k);}catch(e){return k in mem?mem[k]:null;}},
+  set(k,v){try{localStorage.setItem(k,v);return true;}catch(e){mem[k]=v;return false;}},
+  del(k){try{localStorage.removeItem(k);}catch(e){}delete mem[k];}};
+const jparse=(s,d)=>{try{const v=JSON.parse(s);return v==null?d:v;}catch(e){return d;}};
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;$('#toasts').appendChild(t);setTimeout(()=>t.remove(),4500);}
+
+/* ---------- default admin access ---------- */
+const DEFAULT_USER='admin',DEFAULT_PASS='aula2026';
+
+/* ---------- state ---------- */
+const baked=jparse($('#baked').textContent,{});
+const S={
+  images:Object.assign({},baked.images||{},jparse(LS.get('bora-images'),{})),
+  portal:LS.get('bora-portal')!=null?LS.get('bora-portal'):(baked.portal||''),
+  auth:jparse(LS.get('bora-auth'),null)||baked.auth||null,
+  admin:LS.get('bora-session')==='1',
+  texts:Object.assign({},baked.texts||{},jparse(LS.get('bora-texts'),{})),
+  site:Object.assign({email:'',transfer:'',paypal:'',wise:''},baked.site||{},jparse(LS.get('bora-site'),{})),
+  cfg:Object.assign({cloud:'',preset:''},baked.cfg||{},jparse(LS.get('bora-cfg'),{}))
+};
+
+/* ---------- default illustrations (original SVG art) ---------- */
+function svg(w,h,body,bg){
+  const s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'"><rect width="'+w+'" height="'+h+'" fill="'+bg+'"/>'+body+'</svg>';
+  return 'data:image/svg+xml;utf8,'+encodeURIComponent(s);
+}
+function waves(w,y,rows,c1,c2){
+  let out='';
+  for(let r=0;r<rows;r++){
+    const yy=y+r*34;let d='M-40 '+yy;
+    for(let x=-40;x<w+80;x+=80)d+=' q20 -26 40 0 t40 0';
+    d+=' V'+(yy+60)+' H-40Z';
+    out+='<path d="'+d+'" fill="'+(r%2?c2:c1)+'"/>';
+  }
+  return out;
+}
+const bubble=(x,y,w,h,fill,txt,tc,size)=>'<g><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+(h/2.6)+'" fill="'+fill+'"/><path d="M'+(x+30)+' '+(y+h-2)+' l-6 26 l30 -24Z" fill="'+fill+'"/><text x="'+(x+w/2)+'" y="'+(y+h/2+size/3)+'" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="'+size+'" fill="'+tc+'">'+txt+'</text></g>';
+const DEFAULTS={
+  hero:{alt:'Ilustración de una playa brasileña al atardecer con globo de diálogo «Olá!»',label:'Imagen principal',
+    src:()=>svg(800,1000,'<circle cx="400" cy="380" r="170" fill="#FFB800"/><path d="M0 640 L170 470 L260 560 L380 430 L520 590 L640 500 L800 650 V1000 H0Z" fill="#0A8F55"/><path d="M80 650 q20 -90 70 -120 q-10 60 10 120Z M620 660 q10 -110 80 -160 q-6 70 20 160Z" fill="#075E38"/>'+waves(800,690,8,'#1330C9','#FFFFFF')+bubble(470,130,250,110,'#FFFFFF','Olá!','#1330C9',64),'#FF8A3D')},
+  c1:{alt:'Ilustración de una computadora portátil con un video en pantalla',label:'Tarjeta: recursos gratuitos',
+    src:()=>svg(800,600,'<rect x="150" y="120" width="500" height="320" rx="24" fill="#0B1B4D"/><rect x="172" y="142" width="456" height="276" rx="12" fill="#FFFFFF"/><circle cx="400" cy="280" r="62" fill="#1330C9"/><path d="M382 248 L430 280 L382 312Z" fill="#fff"/><path d="M90 470 H710 L670 520 H130Z" fill="#B7C3F2"/><circle cx="690" cy="150" r="46" fill="#FFB800"/>','#DCE5FF')},
+  c2:{alt:'Ilustración de tarjetas de curso con marcas de verificación',label:'Tarjeta: cursos en línea',
+    src:()=>svg(800,600,'<rect x="170" y="80" width="460" height="130" rx="22" fill="#FFFFFF"/><rect x="170" y="230" width="460" height="130" rx="22" fill="#FFFFFF"/><rect x="170" y="380" width="460" height="130" rx="22" fill="#FFFFFF"/><g fill="#0A8F55"><circle cx="240" cy="145" r="30"/><circle cx="240" cy="295" r="30"/></g><circle cx="240" cy="445" r="30" fill="#FFB800"/><path d="M224 145 l12 12 22 -26 M224 295 l12 12 22 -26" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><g fill="#C7D1F6"><rect x="300" y="122" width="270" height="18" rx="9"/><rect x="300" y="152" width="170" height="14" rx="7"/><rect x="300" y="272" width="270" height="18" rx="9"/><rect x="300" y="302" width="200" height="14" rx="7"/><rect x="300" y="422" width="270" height="18" rx="9"/><rect x="300" y="452" width="140" height="14" rx="7"/></g>','#CFEFDF')},
+  c3:{alt:'Ilustración de dos globos de diálogo en portugués',label:'Tarjeta: clases privadas y en grupo',
+    src:()=>svg(800,600,'<circle cx="640" cy="120" r="70" fill="#FFB800"/>'+bubble(90,100,340,130,'#FFFFFF','Oi!','#1330C9',70)+bubble(300,300,420,150,'#1330C9','Tudo bem?','#FFFFFF',66)+waves(800,520,3,'#0A8F55','#075E38'),'#FFD9E8')},
+  about:{alt:'Ilustración de palmeras y un atardecer',label:'Sobre mí',
+    src:()=>svg(800,800,'<circle cx="400" cy="420" r="210" fill="#FFB800"/><g fill="#075E38"><path d="M130 800 q-10 -250 40 -380 l26 4 q-34 150 -10 376Z"/><path d="M170 424 q-90 -20 -140 40 q80 -20 140 -4 q-60 -50 -50 -110 q40 40 50 74 q10 -80 60 -120 q-20 70 -10 120 q50 -50 130 -40 q-70 20 -110 70Z"/><path d="M640 800 q10 -220 -30 -330 l-24 4 q30 130 6 326Z"/><path d="M612 474 q80 -14 130 40 q-70 -22 -128 -6 q50 -44 40 -100 q-34 36 -42 66 q-8 -70 -54 -106 q16 62 8 110 q-44 -44 -118 -34 q64 18 100 64Z"/></g>'+waves(800,640,5,'#1330C9','#3A55E6'),'#FF8A3D')},
+  club:{alt:'Ilustración de un reproductor de video',label:'Club de video',
+    src:()=>svg(960,600,'<rect x="170" y="110" width="620" height="380" rx="34" fill="#FFFFFF"/><circle cx="480" cy="300" r="86" fill="#E5262A"/><path d="M452 250 L522 300 L452 350Z" fill="#fff"/><g fill="#1330C9"><rect x="170" y="520" width="620" height="16" rx="8" opacity=".25"/><rect x="170" y="520" width="360" height="16" rx="8"/></g><circle cx="130" cy="90" r="40" fill="#FFB800"/><circle cx="840" cy="520" r="52" fill="#0A8F55"/>','#2B3FA8')},
+  outcome:{alt:'Ilustración de tres personas sonriendo',label:'Lo que vas a lograr',
+    src:()=>svg(800,800,'<g><circle cx="230" cy="360" r="110" fill="#FFB800"/><circle cx="400" cy="300" r="130" fill="#FFFFFF"/><circle cx="580" cy="370" r="105" fill="#0A8F55"/></g><g fill="#0B1B4D"><circle cx="200" cy="340" r="12"/><circle cx="260" cy="340" r="12"/><circle cx="360" cy="280" r="13"/><circle cx="440" cy="280" r="13"/><circle cx="555" cy="350" r="11"/><circle cx="610" cy="350" r="11"/></g><g stroke="#0B1B4D" stroke-width="9" fill="none" stroke-linecap="round"><path d="M195 395 q35 36 70 0"/><path d="M355 345 q45 46 90 0"/><path d="M548 410 q30 32 64 0"/></g>'+waves(800,560,6,'#1330C9','#3A55E6'),'#FFE4A6')},
+  news:{alt:'Fondo de olas azules',label:'Fondo del boletín',
+    src:()=>svg(1600,600,waves(1600,60,16,'#1330C9','#2A46E0')+'<circle cx="1380" cy="130" r="90" fill="#FFB800"/>','#0E26A8')}
+};
+const imgSrc=k=>S.images[k]||DEFAULTS[k].src();
+
+function paintImages(){
+  $$('.slot[data-slot]').forEach(sl=>{
+    const k=sl.dataset.slot,im=$('img',sl);if(!im||!DEFAULTS[k])return;
+    const src=imgSrc(k);if(im.getAttribute('src')!==src)im.src=src;
+    im.alt=DEFAULTS[k].alt;
+  });
+}
+function paintAdmin(){
+  document.body.classList.toggle('admin',S.admin);
+  $$('[data-t]').forEach(e=>{if(S.admin)e.contentEditable='true';else e.removeAttribute('contenteditable');});
+  $$('.slot .edit').forEach(b=>b.remove());
+  if(S.admin)$$('.slot[data-slot]').forEach(sl=>{
+    const b=document.createElement('button');b.type='button';b.className='edit';b.dataset.edit=sl.dataset.slot;b.textContent='Cambiar imagen';b.setAttribute('aria-label','Cambiar imagen: '+DEFAULTS[sl.dataset.slot].label);sl.appendChild(b);
+  });
+  const bar=$('#adminBar');bar.hidden=!S.admin;
+  bar.innerHTML=S.admin?'<b>Modo administrador</b><span class="hint" style="color:inherit;opacity:.8">Toca cualquier texto para editarlo o «Cambiar imagen» en las fotos.</span><button class="btn sm sun" data-act="panel">Panel</button><button class="btn sm sun" data-act="download">Descargar sitio</button><button class="btn sm" data-act="settings">Ajustes</button><button class="btn sm" data-act="logout">Salir</button>':'';
+}
+
+/* ---------- hashing ---------- */
+function hex(b){return Array.from(new Uint8Array(b),x=>x.toString(16).padStart(2,'0')).join('');}
+function rnd(n){const a=new Uint8Array(n);if(window.crypto&&crypto.getRandomValues)crypto.getRandomValues(a);else for(let i=0;i<n;i++)a[i]=Math.floor(Math.random()*256);return hex(a);}
+function cyrb(s){let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677);}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return (4294967296*(2097151&h2)+(h1>>>0)).toString(16);}
+async function hashPw(salt,pw,alg){
+  const s=salt+'|'+pw;
+  if(alg!=='cyrb'){try{if(window.crypto&&crypto.subtle){return {alg:'sha256',hash:hex(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))};}}catch(e){}}
+  return {alg:'cyrb',hash:cyrb(s)};
+}
+async function checkLogin(user,pw){
+  if(!S.auth)return user.toLowerCase()===DEFAULT_USER&&pw===DEFAULT_PASS;
+  if(user.toLowerCase()!==String(S.auth.user).toLowerCase())return false;
+  const r=await hashPw(S.auth.salt,pw,S.auth.alg);return r.hash===S.auth.hash;
+}
+
+/* ---------- modal ---------- */
+let M=null;
+function closeModal(){M=null;$('#modal').innerHTML='';}
+function openModal(html,focus){
+  $('#modal').innerHTML='<div class="scrim" data-scrim="1"><div class="modal" role="dialog" aria-modal="true">'+html+'</div></div>';
+  const f=focus&&document.getElementById(focus);if(f)f.focus();
+}
+function loginModal(){
+  M={k:'login'};
+  openModal('<h2>Acceso administrador</h2><form id="loginForm"><div class="field"><label for="l-user">Usuario</label><input id="l-user" class="inp" autocomplete="username" required></div><div class="field"><label for="l-pass">Contraseña</label><input id="l-pass" type="password" class="inp" autocomplete="current-password" required></div>'
+    +(S.auth?'':'<p class="hint" style="margin-bottom:14px">Acceso predeterminado: usuario <b>'+DEFAULT_USER+'</b> y contraseña <b>'+DEFAULT_PASS+'</b>. Cámbialos en Ajustes después de entrar.</p>')
+    +'<div class="row"><button class="btn blue" type="submit">Entrar</button><button class="btn ghost" type="button" data-act="close">Cancelar</button></div></form>','l-user');
+}
+function imageModal(k){
+  const d=DEFAULTS[k];M={k:'img',slot:k,pending:null};
+  openModal('<h2>'+esc(d.label)+'</h2><img class="preview" id="imgPrev" alt="Vista previa" src="'+esc(imgSrc(k))+'">'
+    +'<div class="field"><label for="imgFile">Subir una imagen de tu equipo</label><input id="imgFile" type="file" accept="image/*" class="inp"></div>'
+    +'<div class="field"><label for="imgUrl">O pega un enlace (https://…)</label><input id="imgUrl" class="inp" inputmode="url" placeholder="https://"></div>'
+    +'<p class="hint" id="imgHint" style="margin-bottom:14px">Las fotos se reducen automáticamente para que la página cargue rápido.</p>'
+    +'<div class="row"><button class="btn blue" data-act="saveImg">Guardar imagen</button><button class="btn ghost" data-act="resetImg">Volver a la original</button><button class="btn ghost" data-act="close">Cancelar</button></div>');
+}
+function settingsModal(){
+  M={k:'settings'};
+  const subs=jparse(LS.get('bora-subs'),[]),msgs=jparse(LS.get('bora-msgs'),[]);
+  openModal('<h2>Ajustes</h2>'
+   +'<h3>Cambiar usuario y contraseña</h3><form id="passForm"><div class="field"><label for="p-user">Usuario</label><input id="p-user" class="inp" value="'+esc(S.auth?S.auth.user:DEFAULT_USER)+'" autocomplete="username" required></div><div class="field"><label for="p-pass">Contraseña nueva (mínimo 6 caracteres)</label><input id="p-pass" type="password" class="inp" autocomplete="new-password" minlength="6" required></div><button class="btn blue sm" type="submit">Guardar acceso</button></form>'
+   +'<h3>Enlace del aula de alumnos</h3><div class="field"><label for="portalUrl" class="hint">El botón «Acceso alumnos» abrirá este enlace.</label><input id="portalUrl" class="inp" inputmode="url" placeholder="https://" value="'+esc(S.portal)+'"></div><button class="btn blue sm" data-act="savePortal">Guardar enlace</button>'
+   +'<h3>Registros recibidos en este navegador</h3><p class="hint">'+subs.length+' suscripciones al curso gratis · '+msgs.length+' mensajes de contacto</p>'
+   +(subs.length||msgs.length?'<div class="row" style="margin-top:8px"><button class="btn sm" data-act="copyList">Copiar correos</button></div>':'')
+   +'<h3>Contacto y pagos (visibles en el sitio)</h3><form id="siteForm"><div class="field"><label for="s-mail">Tu correo</label><input id="s-mail" type="email" class="inp" value="'+esc(S.site.email)+'"></div><div class="field"><label for="s-tr">Datos de transferencia</label><textarea id="s-tr" class="inp">'+esc(S.site.transfer)+'</textarea></div><div class="field"><label for="s-pp">PayPal (correo o enlace)</label><input id="s-pp" class="inp" value="'+esc(S.site.paypal)+'"></div><div class="field"><label for="s-wi">Wise (correo o enlace)</label><input id="s-wi" class="inp" value="'+esc(S.site.wise)+'"></div><button class="btn blue sm" type="submit">Guardar</button></form>'
+   +'<h3>Cloudinary (fotos)</h3><form id="cfgForm"><div class="field"><label for="s-cl">Cloud name</label><input id="s-cl" class="inp" value="'+esc(S.cfg.cloud)+'"></div><div class="field"><label for="s-up">Upload preset (unsigned)</label><input id="s-up" class="inp" value="'+esc(S.cfg.preset)+'"></div><button class="btn blue sm" type="submit">Guardar</button></form>'
+   +'<h3>Imágenes</h3><div class="row"><button class="btn sm" data-act="resetAll">Restaurar todas las imágenes</button></div>'
+   +'<div class="row" style="margin-top:22px"><button class="btn ghost" data-act="close">Cerrar</button></div>');
+}
+function portalOpen(){U.me()?accountModal():authModal();}
+
+/* ---------- placement test ---------- */
+const QS=[
+  ['Eu ___ brasileiro.',['sou','é','estou','ser'],0],
+  ['Un hombre agradece diciendo:',['obrigada','obrigado','obrigados','obrigo'],1],
+  ['Ela ___ café todos os dias.',['bebo','bebem','bebe','beber'],2],
+  ['Ontem eu ___ ao mercado.',['vou','fui','iria','ir'],1],
+  ['Nós ___ em São Paulo há dois anos.',['moraremos','morávamos','morar','moramos'],3],
+  ['Se eu tivesse tempo, eu ___ mais.',['viajo','viajaria','viajei','viajar'],1],
+  ['Preciso que você ___ isso hoje.',['faz','fazer','faça','fez'],2],
+  ['Espero que eles ___ a tempo.',['chegam','cheguem','chegaram','chegarão'],1]
+];
+let T=null;
+function testStep(){
+  if(T.i>=QS.length){
+    const n=T.score,lvl=n<=2?'A1':n<=4?'A2':n<=6?'B1':'B2';
+    const rec=({A1:'Básico desde cero',A2:'Pre-intermedio',B1:'Gramática hablando',B2:'Clases privadas de conversación'})[lvl];
+    openModal('<h2>Tu nivel orientativo: '+lvl+'</h2><p>Acertaste '+n+' de '+QS.length+'. Te recomendamos empezar con <b>'+rec+'</b>.</p><p class="hint" style="margin-top:8px">Es una prueba rápida; en la primera clase afinamos tu nivel.</p><div class="row" style="margin-top:18px"><a class="btn blue" href="#cursos" data-act="close">Ver cursos</a><button class="btn ghost" data-act="close">Cerrar</button></div>');return;
+  }
+  const q=QS[T.i];
+  openModal('<div class="progress"><i style="width:'+Math.round(T.i/QS.length*100)+'%"></i></div><p class="hint">Pregunta '+(T.i+1)+' de '+QS.length+'</p><h2 style="font-size:24px;margin-block:6px 12px">'+esc(q[0])+'</h2><div role="radiogroup">'
+    +q[1].map((o,i)=>'<label class="opt"><input type="radio" name="tq" value="'+i+'"> <span>'+esc(o)+'</span></label>').join('')+'</div><div class="row" style="margin-top:14px"><button class="btn blue" data-act="testNext">'+(T.i===QS.length-1?'Ver mi nivel':'Siguiente')+'</button><button class="btn ghost" data-act="close">Salir</button></div>');
+}
+
+/* ---------- images: read / resize ---------- */
+function readFile(file,mx,q){
+  return new Promise((res,rej)=>{
+    if(!/^image\//.test(file.type)){rej(new Error('type'));return;}
+    const fr=new FileReader();
+    fr.onerror=()=>rej(new Error('read'));
+    fr.onload=()=>{
+      if(file.type==='image/svg+xml'){if(String(fr.result).length>400000)rej(new Error('big'));else res(fr.result);return;}
+      const im=new Image();
+      im.onerror=()=>rej(new Error('img'));
+      im.onload=()=>{
+        const max=mx||1400,sc=Math.min(1,max/Math.max(im.width,im.height));
+        const c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);
+        const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);
+        res(c.toDataURL('image/jpeg',q||.82));
+      };
+      im.src=fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+function persistImages(){
+  const ok=LS.set('bora-images',JSON.stringify(S.images));
+  if(!ok)toast('No hay espacio en el navegador. Usa «Descargar sitio» para no perder tus cambios.');
+}
+function download(name,text,type){
+  try{
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:type||'text/html'}));a.download=name;document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);toast('Archivo descargado');
+  }catch(e){toast('Este navegador bloqueó la descarga.');}
+}
+function bakeSite(){
+  const data={images:S.images,portal:S.portal,auth:S.auth,texts:S.texts,site:S.site,cfg:S.cfg};
+  const json=JSON.stringify(data).replace(/</g,'\\u003c').replace(/\u2028|\u2029/g,'');
+  return SRC.replace(/(<script id="baked" type="application\/json">)[\s\S]*?(<\/script>)/,(m,a,b)=>a+json+b);
+}
+
+/* ---------- actions ---------- */
+const A={
+  close(){closeModal();},
+  logout(){S.admin=false;LS.del('bora-session');paintAdmin();toast('Sesión cerrada');},
+  settings(){settingsModal();},
+  download(){download('index.html',bakeSite());},
+  async saveImg(){
+    const k=M.slot,file=$('#imgFile').files[0],url=$('#imgUrl').value.trim();
+    try{
+      let val=null;
+      if(file)val=await uploadImg(file,1400);
+      else if(url){if(!/^https?:\/\//i.test(url)){$('#imgHint').textContent='El enlace debe empezar con https://';return;}val=url;}
+      else{$('#imgHint').textContent='Elige una imagen o pega un enlace.';return;}
+      S.images[k]=val;persistImages();paintImages();closeModal();toast('Imagen actualizada');
+    }catch(e){$('#imgHint').textContent=e.message==='big'?'El SVG pesa demasiado. Usa una imagen más liviana.':'No se pudo leer ese archivo. Prueba con JPG o PNG.';}
+  },
+  resetImg(){delete S.images[M.slot];persistImages();paintImages();closeModal();toast('Imagen original restaurada');},
+  resetAll(){S.images={};LS.del('bora-images');paintImages();closeModal();toast('Todas las imágenes restauradas');},
+  savePortal(){const v=$('#portalUrl').value.trim();if(v&&!/^https?:\/\//i.test(v)){toast('El enlace debe empezar con https://');return;}S.portal=v;LS.set('bora-portal',v);toast('Enlace guardado');},
+  copyList(){
+    const subs=jparse(LS.get('bora-subs'),[]),msgs=jparse(LS.get('bora-msgs'),[]);
+    const txt=subs.map(s=>s.name+' <'+s.email+'>').concat(msgs.map(m=>m.name+' <'+m.email+'>')).join('\n');
+    (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast('Correos copiados')).catch(()=>toast('No se pudo copiar. Selecciona el texto manualmente.'));
+  },
+  testNext(){
+    const r=$('input[name=tq]:checked');if(!r){toast('Elige una respuesta.');return;}
+    if(+r.value===QS[T.i][2])T.score++;T.i++;testStep();
+  }
+};
+
+/* ---------- cuentas, pagos, panel, traducción ---------- */
+const WA_URL='https://wa.me/qr/ZSNQSWKRESORH1',PRICE={CELPEBRAS:15};
+const U={get:()=>jparse(LS.get('bora-users'),[]),set(v){if(!LS.set('bora-users',JSON.stringify(v)))toast('No hay espacio en el navegador.');},me:()=>U.get().find(u=>u.id===LS.get('bora-student'))};
+const AVA=svg(120,120,'<circle cx="60" cy="46" r="22" fill="#fff"/><path d="M16 120q4-40 44-40t44 40z" fill="#fff"/>','#009C3B');
+const lk=t=>esc(t).replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+const payHtml=()=>[['transfer','Transferencia bancaria'],['paypal','PayPal'],['wise','Wise']].map(p=>'<div class="point"><b>'+p[1]+'</b><span style="white-space:pre-line">'+lk(S.site[p[0]]||'Pídeme los datos por WhatsApp.')+'</span></div>').join('');
+function paintPay(){$('#payCards').innerHTML=payHtml();const m=$('#mailLink');if(S.site.email){m.hidden=false;m.href='mailto:'+S.site.email;}else m.hidden=true;}
+async function uploadImg(file,mx){
+  const d=await readFile(file,mx,.75);
+  if(!(S.cfg.cloud&&S.cfg.preset)||d.slice(0,14)==='data:image/svg')return d;
+  try{
+    const f=new FormData();f.append('file',await (await fetch(d)).blob());f.append('upload_preset',S.cfg.preset);
+    const j=await (await fetch('https://api.cloudinary.com/v1_1/'+encodeURIComponent(S.cfg.cloud)+'/image/upload',{method:'POST',body:f})).json();
+    if(j.secure_url)return j.secure_url.replace('/upload/','/upload/f_auto,q_auto/');
+  }catch(e){}
+  toast('Cloudinary no respondió; la foto se guardó comprimida en el navegador.');return d;
+}
+function authModal(reg){
+  M={k:'auth'};
+  openModal('<h2>'+(reg?'Crear cuenta':'Acceso alumnos')+'</h2><form id="'+(reg?'regForm':'stuForm')+'">'+(reg?'<div class="field"><label for="r-name">Nombre</label><input id="r-name" class="inp" required maxlength="60"></div>':'')+'<div class="field"><label for="r-mail">Correo</label><input id="r-mail" type="email" class="inp" required></div><div class="field"><label for="r-pass">Contraseña (mínimo 6)</label><input id="r-pass" type="password" class="inp" minlength="6" required></div><div class="row"><button class="btn blue" type="submit">'+(reg?'Registrarme':'Entrar')+'</button><button class="btn ghost" type="button" data-act="'+(reg?'login2':'reg')+'">'+(reg?'Ya tengo cuenta':'Crear cuenta')+'</button><button class="btn ghost" type="button" data-act="close">Cerrar</button></div></form>','r-mail');
+}
+function accountModal(){
+  const u=U.me();if(!u){authModal();return;}
+  M={k:'acc'};
+  const st={none:'Sin inscripción',pending:'Pago en revisión',paid:'Pago confirmado'}[u.status||'none'];
+  openModal('<h2>Mi perfil</h2><div class="row" style="margin-bottom:14px"><img class="ava" src="'+esc(u.photo||AVA)+'" alt=""><div><b>'+esc(u.name)+'</b><div class="hint">'+esc(u.email)+'</div></div></div>'
+   +'<form id="profForm"><div class="field"><label for="a-name">Nombre</label><input id="a-name" class="inp" value="'+esc(u.name)+'" maxlength="60" required></div><div class="field"><label for="a-desc">Descripción</label><textarea id="a-desc" class="inp" maxlength="300">'+esc(u.desc||'')+'</textarea></div><div class="field"><label for="a-photo">Foto (se comprime sola)</label><input id="a-photo" type="file" accept="image/*" class="inp"></div><button class="btn blue sm" type="submit">Guardar perfil</button></form>'
+   +'<h3>Mi clase</h3><p>'+st+(u.course?' · '+esc(u.course):'')+'</p>'
+   +(u.meet?'<p style="margin-top:8px"><a class="btn sun sm" href="'+esc(u.meet)+'" target="_blank" rel="noopener">Entrar a Google Meet</a> <span class="hint">Código: '+esc(u.code||'')+(u.when?' · '+esc(new Date(u.when).toLocaleString()):'')+'</span></p>':'')
+   +(u.status==='paid'?'':'<div class="row" style="margin-top:8px"><button class="btn sm" data-act="enroll">'+(u.status==='pending'?'Cambiar inscripción':'Inscribirme y pagar')+'</button></div>')
+   +'<div class="row" style="margin-top:22px"><button class="btn ghost sm" data-act="out">Cerrar sesión</button><button class="btn ghost sm" data-act="delMe" style="color:var(--acai)">Eliminar mi cuenta</button><button class="btn ghost sm" data-act="close">Cerrar</button></div>');
+}
+function enrollModal(){
+  if(!U.me()){authModal(true);return;}
+  M={k:'enr'};
+  openModal('<h2>Inscripción y pago</h2><div role="radiogroup"><label class="opt"><input type="radio" name="ec" value="CELPEBRAS" checked> <span>Preparatoria Celpe-Bras · US$15</span></label><label class="opt"><input type="radio" name="ec" value="Clase privada"> <span>Clase privada (precio a acordar)</span></label></div><h3>Método de pago</h3><div role="radiogroup">'+['Transferencia','PayPal','Wise'].map((m,i)=>'<label class="opt"><input type="radio" name="em" value="'+m+'"'+(i?'':' checked')+'> <span>'+m+'</span></label>').join('')+'</div><div class="points" style="margin-top:12px">'+payHtml()+'</div><p class="hint" style="margin:12px 0">Cuando pagues pulsa el botón. La profesora confirmará y verás aquí tu enlace de Google Meet.</p><div class="row"><button class="btn sun" data-act="paid">Ya hice el pago</button><button class="btn ghost" data-act="close">Cerrar</button></div>');
+}
+function panelModal(){
+  M={k:'panel'};
+  const us=U.get(),ms=jparse(LS.get('bora-msgs'),[]),inc=us.filter(u=>u.status==='paid').reduce((a,u)=>a+(+u.amount||0),0);
+  const row=u=>'<div class="point"><b>'+esc(u.name)+' <span class="hint">'+esc(u.email)+'</span></b><span>'+esc(u.course||'Sin curso')+' · '+({none:'Sin pago',pending:'Pago por confirmar ('+esc(u.method||'')+')',paid:'Pagado US$'+(+u.amount||0)})[u.status||'none']+(u.meet?' · Meet '+esc(u.when?new Date(u.when).toLocaleString():'')+' · '+esc(u.code||''):'')+'</span><div class="row" style="margin-top:8px">'+(u.status==='pending'?'<button class="btn sm sun" data-act="confirm" data-id="'+u.id+'">Confirmar pago</button>':'')+(u.status==='paid'?'<button class="btn sm blue" data-act="meet" data-id="'+u.id+'">'+(u.meet?'Regenerar Meet':'Generar clase Meet')+'</button>':'')+'<button class="btn sm ghost" data-act="delUser" data-id="'+u.id+'">Eliminar cuenta</button></div></div>';
+  openModal('<h2>Panel de la profesora</h2><div class="points" style="grid-template-columns:repeat(3,1fr)"><div class="point"><b>US$'+inc+'</b><span>Ingresos</span></div><div class="point"><b>'+us.filter(u=>u.meet).length+'</b><span>Aulas</span></div><div class="point"><b>'+us.length+'</b><span>Cuentas</span></div></div><h3>Alumnos</h3><div class="points">'+(us.map(row).join('')||'<p class="hint">Aún no hay alumnos en este navegador.</p>')+'</div><h3>Mensajes de contacto</h3>'+(ms.slice(-10).reverse().map(m=>'<p class="hint" style="margin-bottom:8px"><b>'+esc(m.name)+'</b> · '+esc(m.email)+(m.wa?' · '+esc(m.wa):'')+'<br>'+esc(m.msg)+'</p>').join('')||'<p class="hint">Sin mensajes.</p>')+'<div class="row" style="margin-top:18px"><button class="btn ghost" data-act="close">Cerrar</button></div>');
+}
+const upd=(id,f)=>{const us=U.get(),u=us.find(x=>x.id===id);if(u){f(u);U.set(us);}return u;};
+Object.assign(A,{
+  reg(){authModal(true);},login2(){authModal(false);},enroll(){enrollModal();},panel(){panelModal();},
+  out(){LS.del('bora-student');closeModal();toast('Sesión cerrada');},
+  delMe(){if(!confirm('¿Eliminar tu cuenta y tus datos? No se puede deshacer.'))return;U.set(U.get().filter(u=>u.id!==LS.get('bora-student')));LS.del('bora-student');closeModal();toast('Cuenta eliminada');},
+  delUser(el){if(!confirm('¿Eliminar esta cuenta?'))return;U.set(U.get().filter(u=>u.id!==el.dataset.id));panelModal();},
+  paid(){const c=($('input[name=ec]:checked')||{}).value,m=($('input[name=em]:checked')||{}).value;upd(LS.get('bora-student'),u=>{u.course=c;u.method=m;u.status='pending';u.amount=PRICE[c]||0;});toast('Pago enviado a revisión');accountModal();},
+  confirm(el){const u=U.get().find(x=>x.id===el.dataset.id),a=prompt('Monto recibido (US$)',String(PRICE[u.course]||0));if(a===null)return;upd(u.id,x=>{x.amount=+a||0;x.status='paid';});panelModal();},
+  meet(el){
+    window.open('https://meet.new','_blank','noopener');M={k:'meet',id:el.dataset.id};
+    openModal('<h2>Clase de Google Meet</h2><p class="hint" style="margin-bottom:12px">Se abrió Google Meet. Crea la reunión, copia el enlace y pégalo aquí.</p><div class="field"><label for="m-link">Enlace (https://meet.google.com/…)</label><input id="m-link" class="inp" inputmode="url"></div><div class="field"><label for="m-when">Fecha y hora</label><input id="m-when" type="datetime-local" class="inp"></div><div class="row"><button class="btn blue" data-act="meetSave">Guardar clase</button><button class="btn ghost" data-act="panel">Volver</button></div>','m-link');
+  },
+  meetSave(){const l=$('#m-link').value.trim();if(!/^https:\/\/meet\.google\.com\/[a-z0-9-]+/i.test(l)){toast('Pega un enlace de meet.google.com');return;}const w=$('#m-when').value;upd(M.id,u=>{u.meet=l;u.code=l.split('/').pop().split('?')[0];u.when=w?new Date(w).getTime():0;});panelModal();}
+});
+let GT=0;
+function setLang(l){
+  const go=()=>{const s=$('.goog-te-combo');if(!s){setTimeout(go,300);return;}s.value=l==='es'?'':l;s.dispatchEvent(new Event('change'));};
+  if(l==='es'&&!GT)return;
+  if(GT){go();return;}
+  GT=1;window.gtInit=()=>{new google.translate.TranslateElement({pageLanguage:'es',autoDisplay:false},'google_translate_element');go();};
+  const sc=document.createElement('script');sc.src='https://translate.google.com/translate_a/element.js?cb=gtInit';document.head.appendChild(sc);
+}
+document.addEventListener('change',e=>{if(e.target.id==='lang')setLang(e.target.value);});
+document.addEventListener('click',e=>{const b=e.target.closest('.btn');if(!b)return;const r=b.getBoundingClientRect(),p=document.createElement('span');p.className='rip';p.style.cssText='left:'+(e.clientX-r.left)+'px;top:'+(e.clientY-r.top)+'px;width:24px;height:24px;margin:-12px 0 0 -12px';b.appendChild(p);setTimeout(()=>p.remove(),650);});
+document.addEventListener('focusout',e=>{const t=e.target;if(S.admin&&t.dataset&&t.dataset.t!=null){S.texts[t.dataset.t]=t.innerHTML;LS.set('bora-texts',JSON.stringify(S.texts));}});
+document.addEventListener('submit',async e=>{
+  const id=e.target.id,v=i=>(($('#'+i)||{}).value||'');
+  if(id==='regForm'){
+    e.preventDefault();const us=U.get(),em=v('r-mail').trim().toLowerCase();
+    if(us.some(u=>u.email===em)){toast('Ese correo ya tiene cuenta.');return;}
+    const salt=rnd(8),h=await hashPw(salt,v('r-pass')),u={id:rnd(6),name:v('r-name').trim(),email:em,salt,alg:h.alg,hash:h.hash,status:'none'};
+    us.push(u);U.set(us);LS.set('bora-student',u.id);accountModal();
+  }else if(id==='stuForm'){
+    e.preventDefault();const u=U.get().find(x=>x.email===v('r-mail').trim().toLowerCase()),h=u&&await hashPw(u.salt,v('r-pass'),u.alg);
+    if(u&&h.hash===u.hash){LS.set('bora-student',u.id);accountModal();}else toast('Correo o contraseña incorrectos.');
+  }else if(id==='profForm'){
+    e.preventDefault();const us=U.get(),u=us.find(x=>x.id===LS.get('bora-student'));if(!u)return;
+    u.name=v('a-name').trim();u.desc=v('a-desc').trim();const f=$('#a-photo').files[0];
+    if(f){try{u.photo=await uploadImg(f,480);}catch(x){toast('No se pudo leer esa foto.');return;}}
+    U.set(us);accountModal();toast('Perfil guardado');
+  }else if(id==='siteForm'){
+    e.preventDefault();S.site={email:v('s-mail').trim(),transfer:v('s-tr'),paypal:v('s-pp').trim(),wise:v('s-wi').trim()};LS.set('bora-site',JSON.stringify(S.site));paintPay();toast('Guardado');
+  }else if(id==='cfgForm'){
+    e.preventDefault();S.cfg={cloud:v('s-cl').trim(),preset:v('s-up').trim()};LS.set('bora-cfg',JSON.stringify(S.cfg));toast('Cloudinary guardado');
+  }
+});
+
+function openNamed(n){
+  if(n==='login')loginModal();
+  else if(n==='portal')portalOpen();
+  else if(n==='enroll')enrollModal();
+  else if(n==='test'){T={i:0,score:0};testStep();}
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+  const t=e.target;
+  if(t.dataset&&t.dataset.scrim){closeModal();return;}
+  const ed=t.closest('[data-edit]');if(ed){imageModal(ed.dataset.edit);return;}
+  const op=t.closest('[data-open]');if(op){e.preventDefault();openNamed(op.dataset.open);return;}
+  const ac=t.closest('[data-act]');if(ac&&A[ac.dataset.act]){if(ac.tagName==='A'&&ac.dataset.act==='close'){closeModal();return;}e.preventDefault();A[ac.dataset.act](ac);return;}
+  const hs=t.closest('.has-sub>button');
+  if(hs){const li=hs.parentElement;const was=li.classList.contains('open');$$('.has-sub.open').forEach(x=>x.classList.remove('open'));if(!was)li.classList.add('open');return;}
+  if(!t.closest('.menu'))$$('.has-sub.open').forEach(x=>x.classList.remove('open'));
+  if(t.closest('.menu a[href^="#"]')){$('#nav').classList.remove('open');$('#burger').setAttribute('aria-expanded','false');}
+});
+$('#burger').addEventListener('click',()=>{const n=$('#nav'),o=n.classList.toggle('open');$('#burger').setAttribute('aria-expanded',String(o));});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&M)closeModal();});
+document.addEventListener('change',e=>{
+  if(e.target.id==='imgFile'&&e.target.files[0]){
+    readFile(e.target.files[0]).then(v=>{$('#imgPrev').src=v;$('#imgHint').textContent='Vista previa lista. Pulsa «Guardar imagen».';}).catch(()=>{$('#imgHint').textContent='No se pudo leer ese archivo. Prueba con JPG o PNG.';});
+  }
+});
+document.addEventListener('input',e=>{
+  if(e.target.id==='imgUrl'){const v=e.target.value.trim();if(/^https?:\/\//i.test(v))$('#imgPrev').src=v;}
+});
+document.addEventListener('submit',async e=>{
+  const id=e.target.id;
+  if(id==='loginForm'){
+    e.preventDefault();
+    const ok=await checkLogin($('#l-user').value.trim(),$('#l-pass').value);
+    if(ok){S.admin=true;LS.set('bora-session','1');closeModal();paintAdmin();panelModal();toast('Bienvenida. Toca cualquier texto para editarlo o «Cambiar imagen» en las fotos.');}
+    else toast('Usuario o contraseña incorrectos.');
+  }else if(id==='passForm'){
+    e.preventDefault();
+    const u=$('#p-user').value.trim(),p=$('#p-pass').value;
+    if(u.length<3||p.length<6){toast('Usuario de 3+ y contraseña de 6+ caracteres.');return;}
+    const salt=rnd(8),r=await hashPw(salt,p);S.auth={user:u,salt,alg:r.alg,hash:r.hash};LS.set('bora-auth',JSON.stringify(S.auth));
+    $('#p-pass').value='';toast('Acceso actualizado. Descarga el sitio para publicarlo con la nueva contraseña.');
+  }else if(id==='newsForm'){
+    e.preventDefault();
+    const list=jparse(LS.get('bora-subs'),[]);list.push({name:$('#n-name').value.trim(),email:$('#n-mail').value.trim(),at:Date.now()});LS.set('bora-subs',JSON.stringify(list));
+    e.target.reset();$('#newsNote').textContent='¡Listo! Te anotamos para el curso gratis de pronunciación.';toast('Suscripción registrada');
+  }else if(id==='contactForm'){
+    e.preventDefault();
+    const list=jparse(LS.get('bora-msgs'),[]);list.push({name:$('#c-name').value.trim(),email:$('#c-mail').value.trim(),wa:($('#c-wa').value||'').trim(),msg:$('#c-msg').value.trim(),at:Date.now()});LS.set('bora-msgs',JSON.stringify(list));
+    e.target.reset();toast('Mensaje enviado. Te responderemos pronto.');
+  }
+});
+
+/* ---------- boot ---------- */
+$('#yr').textContent=new Date().getFullYear();
+$$('h1,h2,h3,h4,p:not(.ready),.chip,.point b,.point span,.eyebrow,.club li,.sticker,.strip').filter(e=>!e.closest('#payCards,#modal,.sr')).forEach((e,i)=>{e.dataset.t=i;if(S.texts[i]!=null)e.innerHTML=S.texts[i];});
+paintPay();paintImages();paintAdmin();
+})();
+</script>
+</body>
+</html>
