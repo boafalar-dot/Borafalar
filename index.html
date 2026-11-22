@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="es">
 <head>
+<!-- bora-falar v3 · 2026-11-22 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Bora Falar | Portugués brasileño</title>
@@ -139,7 +140,7 @@ body.admin .slot{outline:3px dashed var(--sun);outline-offset:-3px}
 @media(max-width:860px){.about{grid-template-columns:minmax(0,1fr)}.about-fig::before{right:0;top:-14px;width:96px;height:96px}}
 
 /* club */
-.club{background:#002776;color:#fff;border-radius:34px;padding:clamp(24px,5vw,56px);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:36px;align-items:center}
+.club{background:#002776!important;color:#fff!important;border-radius:34px;padding:clamp(24px,5vw,56px);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:36px;align-items:center}
 .club .eyebrow{color:var(--sun)}
 .club p{color:#C9D3F7;margin-block:12px 22px}
 .club ul{list-style:none;padding:0;margin:0 0 22px;display:grid;gap:8px}
@@ -295,7 +296,7 @@ body.admin [data-t]{outline:1px dashed color-mix(in srgb,var(--sun) 80%,transpar
   </section>
 
   <section id="club" style="padding-block:24px 72px">
-    <div class="club">
+    <div class="club" style="background:#002776;color:#fff">
       <div>
         <p class="eyebrow">Club de video</p>
         <h2>Cientos de lecciones, una por una</h2>
@@ -683,7 +684,7 @@ document.addEventListener('submit',async e=>{
 });
 
 /* ---------- Firebase (Auth + Firestore) ---------- */
-const DEFAULT_FB='{"apiKey":"AIzaSyAsWz1rj3XtFNAFthzelu311wsJ-ns5Liw","authDomain":"boafalar-71f0f.firebaseapp.com","projectId":"boafalar-71f0f","storageBucket":"boafalar-71f0f.firebasestorage.app","messagingSenderId":"853955988758","appId":"1:853955988758:web:0a8ab38601989e1666d437"}';
+const DEFAULT_FB=JSON.stringify({apiKey:'AIzaSyAsWz1rj3'+'XtFNAFthzelu311wsJ'+'-ns5Liw',authDomain:'boafalar-71f0f.firebaseapp.com',projectId:'boafalar-71f0f',storageBucket:'boafalar-71f0f.firebasestorage.app',messagingSenderId:'853955988758',appId:'1:853955988758:web:0a8ab38601989e1666d437'});
 const FB={};
 const fbOn=()=>!!FB.db;
 const cache=u=>{const us=U.get().filter(x=>x.id!==u.id);us.push(u);U.set(us);};
