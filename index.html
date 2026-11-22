@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es">
 <head>
-<!-- bora-falar v3 · 2026-11-22 -->
+<!-- bora-falar v5 · 2026-11-22 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Bora Falar | Portugués brasileño</title>
@@ -351,7 +351,7 @@ body.admin [data-t]{outline:1px dashed color-mix(in srgb,var(--sun) 80%,transpar
     <div><h4>Recursos</h4><ul><li><a href="#boletin">Pronunciación gratis</a></li><li><a href="#club">Club de video</a></li></ul></div>
     <div><h4>Más</h4><ul><li><a href="#sobre-mi">Sobre mí</a></li><li><a href="#contacto">Contacto</a></li><li><a href="#" data-open="portal">Acceso alumnos</a></li><li><a href="https://www.instagram.com/valeria.elliza?dmpr=NXpzMGUyZGMzdTd6" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://wa.me/qr/ZSNQSWKRESORH1" target="_blank" rel="noopener">WhatsApp</a></li></ul></div>
   </div>
-  <div class="copy"><span>© <span id="yr"></span> Bora Falar. Todos los derechos reservados.</span><button type="button" data-open="login">Acceso administrador</button></div>
+  <div class="copy"><span>© <span id="yr"></span> Bora Falar. Todos los derechos reservados.</span></div>
 </footer>
 
 <a class="wa" href="https://wa.me/qr/ZSNQSWKRESORH1" target="_blank" rel="noopener" aria-label="Escríbeme por WhatsApp">WhatsApp</a>
@@ -467,10 +467,9 @@ function openModal(html,focus){
 }
 function loginModal(){
   M={k:'login'};
-  openModal('<h2>Acceso administrador</h2><form id="loginForm"><div class="field"><label for="l-user">Usuario</label><input id="l-user" class="inp" autocomplete="username" required></div><div class="field"><label for="l-pass">Contraseña</label><input id="l-pass" type="password" class="inp" autocomplete="current-password" required></div>'
-    +(S.auth?'':'<p class="hint" style="margin-bottom:14px">Acceso predeterminado: usuario <b>'+DEFAULT_USER+'</b> y contraseña <b>'+DEFAULT_PASS+'</b>. Cámbialos en Ajustes después de entrar.</p>')
-    +'<div class="row"><button class="btn blue" type="submit">Entrar</button><button class="btn ghost" type="button" data-act="close">Cancelar</button></div></form>','l-user');
+  openModal('<h2>Acceso de la profesora</h2><button type="button" class="btn blue" data-act="gLogin" style="width:100%">Entrar con mi correo de Google</button><p class="hint" style="margin:14px 0;text-align:center">o con correo/usuario y contraseña</p><form id="loginForm"><div class="field"><label for="l-user">Correo o usuario</label><input id="l-user" name="username" class="inp" autocomplete="username" autocapitalize="none" required></div><div class="field"><label for="l-pass">Contraseña</label><input id="l-pass" name="password" type="password" class="inp" autocomplete="current-password" required></div><div class="row"><button class="btn blue" type="submit">Entrar</button><button class="btn ghost" type="button" data-act="close">Cancelar</button></div></form>','l-user');
 }
+function enterAdmin(){S.admin=true;LS.set('bora-session','1');closeModal();paintAdmin();panelGo();toast('Bienvenida. Toca cualquier texto para editarlo o «Cambiar imagen» en las fotos.');}
 function imageModal(k){
   const d=DEFAULTS[k];M={k:'img',slot:k,pending:null};
   openModal('<h2>'+esc(d.label)+'</h2><img class="preview" id="imgPrev" alt="Vista previa" src="'+esc(imgSrc(k))+'">'
@@ -557,7 +556,7 @@ function bakeSite(){
 /* ---------- actions ---------- */
 const A={
   close(){closeModal();},
-  logout(){S.admin=false;LS.del('bora-session');paintAdmin();toast('Sesión cerrada');},
+  logout(){S.admin=false;LS.del('bora-session');LS.del('bora-fbt');if(FB.au)FB.au.signOut(FB.auth);paintAdmin();toast('Sesión cerrada');},
   settings(){settingsModal();},
   download(){download('index.html',bakeSite());},
   async saveImg(){
@@ -603,7 +602,7 @@ async function uploadImg(file,mx){
 }
 function authModal(reg){
   M={k:'auth'};
-  openModal('<h2>'+(reg?'Crear cuenta':'Acceso alumnos')+'</h2><form id="'+(reg?'regForm':'stuForm')+'">'+(reg?'<div class="field"><label for="r-name">Nombre</label><input id="r-name" class="inp" required maxlength="60"></div>':'')+'<div class="field"><label for="r-mail">Correo</label><input id="r-mail" type="email" class="inp" required></div><div class="field"><label for="r-pass">Contraseña (mínimo 6)</label><input id="r-pass" type="password" class="inp" minlength="6" required></div><div class="row"><button class="btn blue" type="submit">'+(reg?'Registrarme':'Entrar')+'</button><button class="btn ghost" type="button" data-act="'+(reg?'login2':'reg')+'">'+(reg?'Ya tengo cuenta':'Crear cuenta')+'</button><button class="btn ghost" type="button" data-act="close">Cerrar</button></div></form>','r-mail');
+  openModal('<h2>'+(reg?'Crear cuenta':'Acceso alumnos')+'</h2><button type="button" class="btn blue" data-act="gLogin" style="width:100%">Continuar con Google</button><p class="hint" style="margin:14px 0;text-align:center">o con correo y contraseña</p><form id="'+(reg?'regForm':'stuForm')+'">'+(reg?'<div class="field"><label for="r-name">Nombre</label><input id="r-name" class="inp" required maxlength="60"></div>':'')+'<div class="field"><label for="r-mail">Correo</label><input id="r-mail" type="email" class="inp" required></div><div class="field"><label for="r-pass">Contraseña (mínimo 6)</label><input id="r-pass" type="password" class="inp" minlength="6" required></div><div class="row"><button class="btn blue" type="submit">'+(reg?'Registrarme':'Entrar')+'</button><button class="btn ghost" type="button" data-act="'+(reg?'login2':'reg')+'">'+(reg?'Ya tengo cuenta':'Crear cuenta')+'</button><button class="btn ghost" type="button" data-act="close">Cerrar</button></div></form>','r-mail');
 }
 function accountModal(){
   const u=U.me();if(!u){authModal();return;}
@@ -685,11 +684,12 @@ document.addEventListener('submit',async e=>{
 
 /* ---------- Firebase (Auth + Firestore) ---------- */
 const DEFAULT_FB=JSON.stringify({apiKey:'AIzaSyAsWz1rj3'+'XtFNAFthzelu311wsJ'+'-ns5Liw',authDomain:'boafalar-71f0f.firebaseapp.com',projectId:'boafalar-71f0f',storageBucket:'boafalar-71f0f.firebasestorage.app',messagingSenderId:'853955988758',appId:'1:853955988758:web:0a8ab38601989e1666d437'});
+const TEACHER_EMAIL='valeriaeliza@gmail.com';
 const FB={};
 const fbOn=()=>!!FB.db;
 const cache=u=>{const us=U.get().filter(x=>x.id!==u.id);us.push(u);U.set(us);};
 const fbPut=u=>{if(FB.db&&u)FB.fs.setDoc(FB.fs.doc(FB.db,'users',u.id),u).catch(x=>toast(fbErr(x)));};
-function fbErr(x){const c=x&&x.code||'';return({'auth/email-already-in-use':'Ese correo ya tiene cuenta.','auth/weak-password':'La contraseña es muy débil (mínimo 6).','auth/invalid-email':'Correo no válido.','auth/invalid-credential':'Correo o contraseña incorrectos.','auth/wrong-password':'Correo o contraseña incorrectos.','auth/user-not-found':'Correo o contraseña incorrectos.','auth/operation-not-allowed':'Activa Email/Contraseña en Firebase > Authentication.','auth/too-many-requests':'Demasiados intentos. Espera un momento.','permission-denied':'Sin permiso: revisa las reglas de Firestore.'})[c]||('Error: '+(c||(x&&x.message)||x));}
+function fbErr(x){const c=x&&x.code||'';return({'auth/email-already-in-use':'Ese correo ya tiene cuenta.','auth/weak-password':'La contraseña es muy débil (mínimo 6).','auth/invalid-email':'Correo no válido.','auth/invalid-credential':'Correo o contraseña incorrectos.','auth/wrong-password':'Correo o contraseña incorrectos.','auth/user-not-found':'Correo o contraseña incorrectos.','auth/operation-not-allowed':'Activa Email/Contraseña en Firebase > Authentication.','auth/popup-blocked':'El navegador bloqueó la ventana de Google. Permítela e inténtalo otra vez.','auth/too-many-requests':'Demasiados intentos. Espera un momento.','permission-denied':'Sin permiso: revisa las reglas de Firestore.'})[c]||('Error: '+(c||(x&&x.message)||x));}
 async function fbInit(){
   let c;try{c=JSON.parse(S.cfg.fb||DEFAULT_FB);}catch(e){return;}
   if(!c||!c.apiKey)return;
@@ -700,18 +700,21 @@ async function fbInit(){
   FB.au.onAuthStateChanged(FB.auth,async u=>{
     if(FB.busy)return;
     if(!u){LS.del('bora-student');return;}
+    if((u.email||'').toLowerCase()===TEACHER_EMAIL){LS.set('bora-fbt','1');if(!S.admin){S.admin=true;LS.set('bora-session','1');paintAdmin();}return;}
     if(LS.get('bora-fbt')==='1')return;
     try{const d=await FB.fs.getDoc(FB.fs.doc(FB.db,'users',u.uid));
       if(d.exists()){cache(d.data());LS.set('bora-student',u.uid);}else{await FB.au.signOut(FB.auth);LS.del('bora-student');}}catch(e){}
   });
 }
 async function fbReg(name,em,pw){
+  if(em===TEACHER_EMAIL){toast('Ese correo es de la profesora: usa «Acceso alumnos → Entrar».');return;}
   FB.busy=1;LS.del('bora-fbt');
   try{const r=await FB.au.createUserWithEmailAndPassword(FB.auth,em,pw),u={id:r.user.uid,name,email:em,status:'none',created:Date.now()};
     await FB.fs.setDoc(FB.fs.doc(FB.db,'users',u.id),u);cache(u);LS.set('bora-student',u.id);accountModal();
   }catch(x){toast(fbErr(x));}finally{FB.busy=0;}
 }
 async function fbLogin(em,pw){
+  if(em===TEACHER_EMAIL){const t=await teacherLogin(em,pw);if(t===true)enterAdmin();else if(t===false)toast('Esa cuenta no es la de la profesora.');return;}
   FB.busy=1;LS.del('bora-fbt');
   try{const r=await FB.au.signInWithEmailAndPassword(FB.auth,em,pw),d=await FB.fs.getDoc(FB.fs.doc(FB.db,'users',r.user.uid));
     if(!d.exists()){await FB.au.signOut(FB.auth);toast('Esa cuenta fue eliminada.');return;}
@@ -722,6 +725,26 @@ function fbTeacherModal(){
   M={k:'fbt'};
   openModal('<h2>Conectar con la base de datos</h2><p class="hint" style="margin-bottom:12px">Entra con el correo de la profesora creado en Firebase > Authentication para ver a todos los alumnos.</p><form id="fbtForm"><div class="field"><label for="t-mail">Correo</label><input id="t-mail" type="email" class="inp" required></div><div class="field"><label for="t-pass">Contraseña</label><input id="t-pass" type="password" class="inp" required></div><div class="row"><button class="btn blue" type="submit">Conectar</button><button class="btn ghost" type="button" data-act="close">Cerrar</button></div></form>','t-mail');
 }
+async function teacherLogin(em,pw){
+  FB.busy=1;LS.set('bora-fbt','1');
+  try{const r=await FB.au.signInWithEmailAndPassword(FB.auth,em,pw);
+    if((r.user.email||'').toLowerCase()!==TEACHER_EMAIL){await FB.au.signOut(FB.auth);LS.del('bora-fbt');return false;}
+    return true;
+  }catch(x){LS.del('bora-fbt');toast(fbErr(x));return null;}finally{FB.busy=0;}
+}
+Object.assign(A,{async gLogin(){
+  if(!FB.au){toast('Firebase no está listo; espera un momento.');return;}
+  FB.busy=1;
+  try{
+    const r=await FB.au.signInWithPopup(FB.auth,new FB.au.GoogleAuthProvider()),em=(r.user.email||'').toLowerCase();
+    if(em===TEACHER_EMAIL){LS.set('bora-fbt','1');enterAdmin();return;}
+    LS.del('bora-fbt');
+    const ref=FB.fs.doc(FB.db,'users',r.user.uid);let d=await FB.fs.getDoc(ref),u;
+    if(d.exists())u=d.data();else{u={id:r.user.uid,name:r.user.displayName||em.split('@')[0],email:em,status:'none',created:Date.now()};await FB.fs.setDoc(ref,u);}
+    cache(u);LS.set('bora-student',u.id);closeModal();accountModal();
+  }catch(x){if(x&&x.code!=='auth/popup-closed-by-user'&&x.code!=='auth/cancelled-popup-request')toast(x.code==='auth/unauthorized-domain'?'Agrega boafalar-dot.github.io en Firebase > Authentication > Configuración > Dominios autorizados.':fbErr(x));}
+  finally{FB.busy=0;}
+}});
 async function panelGo(){
   if(FB.db){
     if(!(FB.auth.currentUser&&LS.get('bora-fbt')==='1')){fbTeacherModal();return;}
@@ -773,9 +796,14 @@ document.addEventListener('submit',async e=>{
   const id=e.target.id;
   if(id==='loginForm'){
     e.preventDefault();
-    const ok=await checkLogin($('#l-user').value.trim(),$('#l-pass').value);
-    if(ok){S.admin=true;LS.set('bora-session','1');closeModal();paintAdmin();panelGo();toast('Bienvenida. Toca cualquier texto para editarlo o «Cambiar imagen» en las fotos.');}
-    else toast('Usuario o contraseña incorrectos.');
+    const u=$('#l-user').value.trim(),pw=$('#l-pass').value;
+    if(u.includes('@')){
+      if(!FB.au){toast('Firebase no está listo; espera un momento.');return;}
+      const r=await teacherLogin(u.toLowerCase(),pw);
+      if(r===true)enterAdmin();else if(r===false)toast('Esa cuenta no es la de la profesora.');
+      return;
+    }
+    if(await checkLogin(u,pw))enterAdmin();else toast('Usuario o contraseña incorrectos.');
   }else if(id==='passForm'){
     e.preventDefault();
     const u=$('#p-user').value.trim(),p=$('#p-pass').value;
@@ -796,6 +824,10 @@ document.addEventListener('submit',async e=>{
 /* ---------- boot ---------- */
 $('#yr').textContent=new Date().getFullYear();
 $$('h1,h2,h3,h4,p:not(.ready),.chip,.point b,.point span,.eyebrow,.club li,.sticker,.strip').filter(e=>!e.closest('#payCards,#modal,.sr')).forEach((e,i)=>{e.dataset.t=i;if(S.texts[i]!=null)e.innerHTML=S.texts[i];});
+let tp=0,tt;
+document.addEventListener('click',e=>{if(!e.target.closest('.copy'))return;tp++;clearTimeout(tt);tt=setTimeout(()=>{tp=0;},1500);if(tp>=5){tp=0;loginModal();}});
+const hashAdmin=()=>{if(location.hash==='#admin'){history.replaceState(null,'',location.pathname+location.search);loginModal();}};
+window.addEventListener('hashchange',hashAdmin);hashAdmin();
 paintPay();paintImages();paintAdmin();
 fbInit().catch(()=>toast('No se pudo cargar Firebase: revisa la configuración.'));
 })();
