@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es">
 <head>
-<!-- bora-falar v5 · 2026-11-22 -->
+<!-- bora-falar v6 · 2026-11-22 · Cloudinary: material didáctico y tareas -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Bora Falar | Portugués brasileño</title>
@@ -359,7 +359,7 @@ body.admin [data-t]{outline:1px dashed color-mix(in srgb,var(--sun) 80%,transpar
 <div id="adminBar" class="bar" hidden></div>
 <div id="modal"></div>
 <div class="toasts" id="toasts" aria-live="polite"></div>
-<script id="baked" type="application/json">{}</script>
+<script id="baked" type="application/json">{"cfg":{"cloud":"mmcws9qb","preset":"imf71nmz"}}</script>
 <script>
 (function(){
 'use strict';
@@ -613,7 +613,8 @@ function accountModal(){
    +'<h3>Mi clase</h3><p>'+st+(u.course?' · '+esc(u.course):'')+'</p>'
    +(u.meet?'<p style="margin-top:8px"><a class="btn sun sm" href="'+esc(u.meet)+'" target="_blank" rel="noopener">Entrar a Google Meet</a> <span class="hint">Código: '+esc(u.code||'')+(u.when?' · '+esc(new Date(u.when).toLocaleString()):'')+'</span></p>':'')
    +(u.status==='paid'?'':'<div class="row" style="margin-top:8px"><button class="btn sm" data-act="enroll">'+(u.status==='pending'?'Cambiar inscripción':'Inscribirme y pagar')+'</button></div>')
-   +'<div class="row" style="margin-top:22px"><button class="btn ghost sm" data-act="out">Cerrar sesión</button><button class="btn ghost sm" data-act="delMe" style="color:var(--acai)">Eliminar mi cuenta</button><button class="btn ghost sm" data-act="close">Cerrar</button></div>');
+   +'<div id="filesBox"></div><div class="row" style="margin-top:22px"><button class="btn ghost sm" data-act="out">Cerrar sesión</button><button class="btn ghost sm" data-act="delMe" style="color:var(--acai)">Eliminar mi cuenta</button><button class="btn ghost sm" data-act="close">Cerrar</button></div>');
+  studentFiles(u);
 }
 function enrollModal(){
   if(!U.me()){authModal(true);return;}
@@ -624,7 +625,8 @@ function panelModal(){
   M={k:'panel'};
   const us=U.get(),ms=jparse(LS.get('bora-msgs'),[]),inc=us.filter(u=>u.status==='paid').reduce((a,u)=>a+(+u.amount||0),0);
   const row=u=>'<div class="point"><b>'+esc(u.name)+' <span class="hint">'+esc(u.email)+'</span></b><span>'+esc(u.course||'Sin curso')+' · '+({none:'Sin pago',pending:'Pago por confirmar ('+esc(u.method||'')+')',paid:'Pagado US$'+(+u.amount||0)})[u.status||'none']+(u.meet?' · Meet '+esc(u.when?new Date(u.when).toLocaleString():'')+' · '+esc(u.code||''):'')+'</span><div class="row" style="margin-top:8px">'+(u.status==='pending'?'<button class="btn sm sun" data-act="confirm" data-id="'+u.id+'">Confirmar pago</button>':'')+(u.status==='paid'?'<button class="btn sm blue" data-act="meet" data-id="'+u.id+'">'+(u.meet?'Regenerar Meet':'Generar clase Meet')+'</button>':'')+'<button class="btn sm ghost" data-act="delUser" data-id="'+u.id+'">Eliminar cuenta</button></div></div>';
-  openModal('<h2>Panel de la profesora</h2><div class="points" style="grid-template-columns:repeat(3,1fr)"><div class="point"><b>US$'+inc+'</b><span>Ingresos</span></div><div class="point"><b>'+us.filter(u=>u.meet).length+'</b><span>Aulas</span></div><div class="point"><b>'+us.length+'</b><span>Cuentas</span></div></div><h3>Alumnos</h3><div class="points">'+(us.map(row).join('')||'<p class="hint">Aún no hay alumnos en este navegador.</p>')+'</div><h3>Mensajes de contacto</h3>'+(ms.slice(-10).reverse().map(m=>'<p class="hint" style="margin-bottom:8px"><b>'+esc(m.name)+'</b> · '+esc(m.email)+(m.wa?' · '+esc(m.wa):'')+'<br>'+esc(m.msg)+'</p>').join('')||'<p class="hint">Sin mensajes.</p>')+'<div class="row" style="margin-top:18px"><button class="btn ghost" data-act="close">Cerrar</button></div>');
+  openModal('<h2>Panel de la profesora</h2><div class="points" style="grid-template-columns:repeat(3,1fr)"><div class="point"><b>US$'+inc+'</b><span>Ingresos</span></div><div class="point"><b>'+us.filter(u=>u.meet).length+'</b><span>Aulas</span></div><div class="point"><b>'+us.length+'</b><span>Cuentas</span></div></div><h3>Alumnos</h3><div class="points">'+(us.map(row).join('')||'<p class="hint">Aún no hay alumnos en este navegador.</p>')+'</div><h3>Mensajes de contacto</h3>'+(ms.slice(-10).reverse().map(m=>'<p class="hint" style="margin-bottom:8px"><b>'+esc(m.name)+'</b> · '+esc(m.email)+(m.wa?' · '+esc(m.wa):'')+'<br>'+esc(m.msg)+'</p>').join('')||'<p class="hint">Sin mensajes.</p>')+'<div id="tpFiles"></div><div class="row" style="margin-top:18px"><button class="btn ghost" data-act="close">Cerrar</button></div>');
+  teacherFiles();
 }
 const upd=(id,f)=>{const us=U.get(),u=us.find(x=>x.id===id);if(u){f(u);U.set(us);fbPut(u);}return u;};
 Object.assign(A,{
@@ -769,6 +771,98 @@ function openNamed(n){
   else if(n==='enroll')enrollModal();
   else if(n==='test'){T={i:0,score:0};testStep();}
 }
+
+/* ---------- Cloudinary: material didáctico (profesora) y tareas (alumnos) ---------- */
+const DB={
+  async list(col,uid){
+    if(FB.db){const c=FB.fs.collection(FB.db,col),q=await FB.fs.getDocs(uid?FB.fs.query(c,FB.fs.where('uid','==',uid)):c);return q.docs.map(d=>d.data());}
+    return jparse(LS.get('bora-'+col),[]).filter(x=>!uid||x.uid===uid);
+  },
+  async put(col,o){
+    if(FB.db){await FB.fs.setDoc(FB.fs.doc(FB.db,col,o.id),o);return;}
+    const l=jparse(LS.get('bora-'+col),[]).filter(x=>x.id!==o.id);l.push(o);LS.set('bora-'+col,JSON.stringify(l));
+  },
+  async del(col,id){
+    if(FB.db){await FB.fs.deleteDoc(FB.fs.doc(FB.db,col,id));return;}
+    LS.set('bora-'+col,JSON.stringify(jparse(LS.get('bora-'+col),[]).filter(x=>x.id!==id)));
+  }
+};
+const safeUrl=u=>/^https:\/\//i.test(u||'')?u:'#';
+const fmtSize=b=>b>1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
+function cldUp(file,folder,label){
+  return new Promise((res,rej)=>{
+    if(!(S.cfg.cloud&&S.cfg.preset)){rej(new Error('cfg'));return;}
+    if(file.size>100*1048576){rej(new Error('big'));return;}
+    const f=new FormData();f.append('file',file);f.append('upload_preset',S.cfg.preset);f.append('folder',folder);
+    const x=new XMLHttpRequest();
+    x.open('POST','https://api.cloudinary.com/v1_1/'+encodeURIComponent(S.cfg.cloud)+'/auto/upload');
+    x.upload.onprogress=e=>{if(label&&e.lengthComputable)label.textContent='Subiendo '+Math.round(e.loaded/e.total*100)+'%';};
+    x.onload=()=>{let j={};try{j=JSON.parse(x.responseText);}catch(e){}
+      if(x.status<300&&j.secure_url)res({url:j.secure_url,rt:j.resource_type,bytes:j.bytes||file.size});
+      else rej(new Error((j.error&&j.error.message)||'upload'));};
+    x.onerror=()=>rej(new Error('net'));
+    x.send(f);
+  });
+}
+const ACCEPT='.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,image/*,audio/*,video/*';
+const upForm=(id,ph,btn,extra)=>'<form id="'+id+'" class="point" style="margin-bottom:12px"><div class="field"><label for="'+id+'-t">Título</label><input id="'+id+'-t" type="text" class="inp" maxlength="80" placeholder="'+ph+'"></div><div class="field"><label for="'+id+'-f">Archivo (PDF, Word, imagen, audio o video)</label><input id="'+id+'-f" type="file" class="inp" accept="'+ACCEPT+'" required></div>'+(extra||'')+'<button class="btn blue sm" type="submit">'+btn+'</button></form>';
+const fileRow=(f,extra)=>'<div class="point"><b>'+esc(f.title)+'</b><span class="hint">'+esc(f.name||'')+' · '+fmtSize(f.bytes||0)+' · '+esc(new Date(f.at).toLocaleDateString())+(f.course&&f.course!=='all'?' · '+esc(f.course):'')+'</span>'+(f.feedback?'<span style="display:block;margin-top:6px"><b>Comentario de la profesora:</b> '+esc(f.feedback)+'</span>':'')+'<div class="row" style="margin-top:8px"><a class="btn sm blue" href="'+esc(safeUrl(f.url))+'" target="_blank" rel="noopener">Abrir</a>'+(extra||'')+'</div></div>';
+const byDate=(a,b)=>b.at-a.at;
+async function studentFiles(u){
+  const box=$('#filesBox');if(!box)return;
+  box.innerHTML='<p class="hint" style="margin-top:14px">Cargando archivos…</p>';
+  let mats=[],tasks=[];
+  try{[mats,tasks]=await Promise.all([u.status==='paid'?DB.list('materials'):Promise.resolve([]),DB.list('tasks',u.id)]);}
+  catch(x){box.innerHTML='';toast(fbErr(x));return;}
+  if(!$('#filesBox'))return;
+  box.innerHTML='<h3>Material didáctico</h3>'
+    +(u.status!=='paid'?'<p class="hint">Se desbloquea cuando la profesora confirme tu pago.</p>'
+      :'<div class="points">'+(mats.filter(m=>!m.course||m.course==='all'||m.course===u.course).sort(byDate).map(m=>fileRow(m)).join('')||'<p class="hint">Todavía no hay material publicado.</p>')+'</div>')
+    +'<h3>Mis tareas</h3>'+upForm('taskForm','Ej.: Tarea 3, pretérito perfeito','Enviar tarea')
+    +'<div class="points">'+(tasks.sort(byDate).map(t=>fileRow(t)).join('')||'<p class="hint">Aún no has enviado tareas.</p>')+'</div>';
+}
+async function teacherFiles(){
+  const box=$('#tpFiles');if(!box)return;
+  box.innerHTML='<p class="hint" style="margin-top:14px">Cargando archivos…</p>';
+  let mats=[],tasks=[];
+  try{[mats,tasks]=await Promise.all([DB.list('materials'),DB.list('tasks')]);}
+  catch(x){box.innerHTML='';toast(fbErr(x));return;}
+  if(!$('#tpFiles'))return;
+  const del=(c,f)=>'<button class="btn sm ghost" data-act="delFile" data-col="'+c+'" data-id="'+esc(f.id)+'">Quitar</button>';
+  box.innerHTML='<h3>Material didáctico</h3>'+upForm('matForm','Ej.: Guía de pronunciación','Publicar material','<div class="field"><label for="matForm-c">Visible para</label><select id="matForm-c" class="inp"><option value="all">Todos los alumnos con pago</option><option>CELPEBRAS</option><option>Clase privada</option></select></div>')
+    +'<div class="points">'+(mats.sort(byDate).map(m=>fileRow(m,del('materials',m))).join('')||'<p class="hint">Aún no has publicado material.</p>')+'</div>'
+    +'<h3>Tareas recibidas</h3><div class="points">'+(tasks.sort(byDate).map(t=>fileRow(t,'<span class="hint">'+esc(t.student||'')+' · '+esc(t.email||'')+'</span><button class="btn sm sun" data-act="fbTask" data-id="'+esc(t.id)+'">'+(t.feedback?'Editar comentario':'Comentar')+'</button>'+del('tasks',t))).join('')||'<p class="hint">Todavía no hay tareas.</p>')+'</div>';
+}
+Object.assign(A,{async fbTask(el){
+  try{const t=(await DB.list('tasks')).find(x=>x.id===el.dataset.id);if(!t)return;
+    const c=prompt('Comentario para '+(t.student||'el alumno'),t.feedback||'');if(c===null)return;
+    t.feedback=c.trim().slice(0,500);await DB.put('tasks',t);toast('Comentario guardado');teacherFiles();
+  }catch(x){toast(fbErr(x));}
+},async delFile(el){
+  if(!confirm('¿Quitar este archivo del sitio? (Seguirá en tu biblioteca de Cloudinary.)'))return;
+  try{await DB.del(el.dataset.col,el.dataset.id);}catch(x){toast(fbErr(x));return;}
+  teacherFiles();
+}});
+document.addEventListener('submit',async e=>{
+  const id=e.target.id;if(id!=='matForm'&&id!=='taskForm')return;
+  e.preventDefault();
+  const isTask=id==='taskForm',me=isTask?U.me():null,fi=$('input[type=file]',e.target),file=fi.files[0],btn=$('button',e.target),label=btn.textContent;
+  if(!file||(isTask&&!me))return;
+  if(!isTask&&!S.admin)return;
+  btn.disabled=true;
+  try{
+    const r=await cldUp(file,'bora-falar/'+(isTask?'tareas':'materiales'),btn);
+    const o={id:rnd(8),title:($('input[type=text]',e.target).value.trim()||file.name),name:file.name,url:r.url,rt:r.rt,bytes:r.bytes,at:Date.now()};
+    if(isTask){o.uid=me.id;o.student=me.name;o.email=me.email;}else{const c=$('select',e.target);o.course=c?c.value:'all';}
+    await DB.put(isTask?'tasks':'materials',o);
+    toast(isTask?'Tarea enviada':'Material publicado');
+    if(isTask)studentFiles(me);else teacherFiles();
+  }catch(x){
+    btn.disabled=false;btn.textContent=label;
+    const m=x&&x.message;
+    toast(m==='cfg'?'Falta Cloudinary: en Ajustes agrega Cloud name y Upload preset.':m==='big'?'El archivo pesa más de 100 MB.':m==='net'?'Sin conexión con Cloudinary. Inténtalo otra vez.':(x&&x.code)?fbErr(x):'No se pudo subir: '+m);
+  }
+});
 
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{
