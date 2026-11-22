@@ -487,7 +487,7 @@ function settingsModal(){
    +'<h3>Registros recibidos en este navegador</h3><p class="hint">'+subs.length+' suscripciones al curso gratis · '+msgs.length+' mensajes de contacto</p>'
    +(subs.length||msgs.length?'<div class="row" style="margin-top:8px"><button class="btn sm" data-act="copyList">Copiar correos</button></div>':'')
    +'<h3>Contacto y pagos (visibles en el sitio)</h3><form id="siteForm"><div class="field"><label for="s-mail">Tu correo</label><input id="s-mail" type="email" class="inp" value="'+esc(S.site.email)+'"></div><div class="field"><label for="s-tr">Datos de transferencia</label><textarea id="s-tr" class="inp">'+esc(S.site.transfer)+'</textarea></div><div class="field"><label for="s-pp">PayPal (correo o enlace)</label><input id="s-pp" class="inp" value="'+esc(S.site.paypal)+'"></div><div class="field"><label for="s-wi">Wise (correo o enlace)</label><input id="s-wi" class="inp" value="'+esc(S.site.wise)+'"></div><button class="btn blue sm" type="submit">Guardar</button></form>'
-   +'<h3>Cloudinary (fotos)</h3><form id="cfgForm"><div class="field"><label for="s-cl">Cloud name</label><input id="s-cl" class="inp" value="'+esc(S.cfg.cloud)+'"></div><div class="field"><label for="s-up">Upload preset (unsigned)</label><input id="s-up" class="inp" value="'+esc(S.cfg.preset)+'"></div><button class="btn blue sm" type="submit">Guardar</button></form>'
+   +'<h3>Cloudinary y Firebase</h3><form id="cfgForm"><div class="field"><label for="s-fb">Firebase: pega aquí tu firebaseConfig</label><textarea id="s-fb" class="inp" rows="5" placeholder="apiKey: &quot;…&quot;, authDomain: &quot;…&quot;, projectId: &quot;…&quot;, appId: &quot;…&quot;">'+esc(Object.entries(JSON.parse(S.cfg.fb||DEFAULT_FB)).map(e=>e[0]+': "'+e[1]+'"').join(',\n'))+'</textarea></div><div class="field"><label for="s-cl">Cloud name</label><input id="s-cl" class="inp" value="'+esc(S.cfg.cloud)+'"></div><div class="field"><label for="s-up">Upload preset (unsigned)</label><input id="s-up" class="inp" value="'+esc(S.cfg.preset)+'"></div><button class="btn blue sm" type="submit">Guardar</button></form>'
    +'<h3>Imágenes</h3><div class="row"><button class="btn sm" data-act="resetAll">Restaurar todas las imágenes</button></div>'
    +'<div class="row" style="margin-top:22px"><button class="btn ghost" data-act="close">Cerrar</button></div>');
 }
@@ -626,12 +626,20 @@ function panelModal(){
   const row=u=>'<div class="point"><b>'+esc(u.name)+' <span class="hint">'+esc(u.email)+'</span></b><span>'+esc(u.course||'Sin curso')+' · '+({none:'Sin pago',pending:'Pago por confirmar ('+esc(u.method||'')+')',paid:'Pagado US$'+(+u.amount||0)})[u.status||'none']+(u.meet?' · Meet '+esc(u.when?new Date(u.when).toLocaleString():'')+' · '+esc(u.code||''):'')+'</span><div class="row" style="margin-top:8px">'+(u.status==='pending'?'<button class="btn sm sun" data-act="confirm" data-id="'+u.id+'">Confirmar pago</button>':'')+(u.status==='paid'?'<button class="btn sm blue" data-act="meet" data-id="'+u.id+'">'+(u.meet?'Regenerar Meet':'Generar clase Meet')+'</button>':'')+'<button class="btn sm ghost" data-act="delUser" data-id="'+u.id+'">Eliminar cuenta</button></div></div>';
   openModal('<h2>Panel de la profesora</h2><div class="points" style="grid-template-columns:repeat(3,1fr)"><div class="point"><b>US$'+inc+'</b><span>Ingresos</span></div><div class="point"><b>'+us.filter(u=>u.meet).length+'</b><span>Aulas</span></div><div class="point"><b>'+us.length+'</b><span>Cuentas</span></div></div><h3>Alumnos</h3><div class="points">'+(us.map(row).join('')||'<p class="hint">Aún no hay alumnos en este navegador.</p>')+'</div><h3>Mensajes de contacto</h3>'+(ms.slice(-10).reverse().map(m=>'<p class="hint" style="margin-bottom:8px"><b>'+esc(m.name)+'</b> · '+esc(m.email)+(m.wa?' · '+esc(m.wa):'')+'<br>'+esc(m.msg)+'</p>').join('')||'<p class="hint">Sin mensajes.</p>')+'<div class="row" style="margin-top:18px"><button class="btn ghost" data-act="close">Cerrar</button></div>');
 }
-const upd=(id,f)=>{const us=U.get(),u=us.find(x=>x.id===id);if(u){f(u);U.set(us);}return u;};
+const upd=(id,f)=>{const us=U.get(),u=us.find(x=>x.id===id);if(u){f(u);U.set(us);fbPut(u);}return u;};
 Object.assign(A,{
-  reg(){authModal(true);},login2(){authModal(false);},enroll(){enrollModal();},panel(){panelModal();},
-  out(){LS.del('bora-student');closeModal();toast('Sesión cerrada');},
-  delMe(){if(!confirm('¿Eliminar tu cuenta y tus datos? No se puede deshacer.'))return;U.set(U.get().filter(u=>u.id!==LS.get('bora-student')));LS.del('bora-student');closeModal();toast('Cuenta eliminada');},
-  delUser(el){if(!confirm('¿Eliminar esta cuenta?'))return;U.set(U.get().filter(u=>u.id!==el.dataset.id));panelModal();},
+  reg(){authModal(true);},login2(){authModal(false);},enroll(){enrollModal();},panel(){panelGo();},
+  out(){LS.del('bora-student');if(FB.db)FB.au.signOut(FB.auth);closeModal();toast('Sesión cerrada');},
+  async delMe(){
+    if(!confirm('¿Eliminar tu cuenta y tus datos? No se puede deshacer.'))return;const id=LS.get('bora-student');
+    if(FB.db){try{const cu=FB.auth.currentUser,pw=prompt('Escribe tu contraseña para confirmar');if(pw===null)return;
+      await FB.au.reauthenticateWithCredential(cu,FB.au.EmailAuthProvider.credential(cu.email,pw));
+      await FB.fs.deleteDoc(FB.fs.doc(FB.db,'users',id));await FB.au.deleteUser(cu);}catch(x){toast(fbErr(x));return;}}
+    U.set(U.get().filter(u=>u.id!==id));LS.del('bora-student');closeModal();toast('Cuenta eliminada');},
+  async delUser(el){
+    if(!confirm('¿Eliminar esta cuenta? (Para liberar el correo, bórrala también en Firebase > Authentication.)'))return;
+    if(FB.db){try{await FB.fs.deleteDoc(FB.fs.doc(FB.db,'users',el.dataset.id));}catch(x){toast(fbErr(x));return;}}
+    U.set(U.get().filter(u=>u.id!==el.dataset.id));panelModal();},
   paid(){const c=($('input[name=ec]:checked')||{}).value,m=($('input[name=em]:checked')||{}).value;upd(LS.get('bora-student'),u=>{u.course=c;u.method=m;u.status='pending';u.amount=PRICE[c]||0;});toast('Pago enviado a revisión');accountModal();},
   confirm(el){const u=U.get().find(x=>x.id===el.dataset.id),a=prompt('Monto recibido (US$)',String(PRICE[u.course]||0));if(a===null)return;upd(u.id,x=>{x.amount=+a||0;x.status='paid';});panelModal();},
   meet(el){
@@ -665,13 +673,71 @@ document.addEventListener('submit',async e=>{
     e.preventDefault();const us=U.get(),u=us.find(x=>x.id===LS.get('bora-student'));if(!u)return;
     u.name=v('a-name').trim();u.desc=v('a-desc').trim();const f=$('#a-photo').files[0];
     if(f){try{u.photo=await uploadImg(f,480);}catch(x){toast('No se pudo leer esa foto.');return;}}
-    U.set(us);accountModal();toast('Perfil guardado');
+    U.set(us);fbPut(u);accountModal();toast('Perfil guardado');
   }else if(id==='siteForm'){
     e.preventDefault();S.site={email:v('s-mail').trim(),transfer:v('s-tr'),paypal:v('s-pp').trim(),wise:v('s-wi').trim()};LS.set('bora-site',JSON.stringify(S.site));paintPay();toast('Guardado');
   }else if(id==='cfgForm'){
-    e.preventDefault();S.cfg={cloud:v('s-cl').trim(),preset:v('s-up').trim()};LS.set('bora-cfg',JSON.stringify(S.cfg));toast('Cloudinary guardado');
+    e.preventDefault();const fo={};v('s-fb').replace(/(\w+)\s*:\s*["']([^"']+)["']/g,(m,k,x)=>{fo[k]=x;});
+    S.cfg={cloud:v('s-cl').trim(),preset:v('s-up').trim(),fb:fo.apiKey?JSON.stringify(fo):''};LS.set('bora-cfg',JSON.stringify(S.cfg));toast('Guardado. Recargando…');setTimeout(()=>location.reload(),900);
   }
 });
+
+/* ---------- Firebase (Auth + Firestore) ---------- */
+const DEFAULT_FB='{"apiKey":"AIzaSyAsWz1rj3XtFNAFthzelu311wsJ-ns5Liw","authDomain":"boafalar-71f0f.firebaseapp.com","projectId":"boafalar-71f0f","storageBucket":"boafalar-71f0f.firebasestorage.app","messagingSenderId":"853955988758","appId":"1:853955988758:web:0a8ab38601989e1666d437"}';
+const FB={};
+const fbOn=()=>!!FB.db;
+const cache=u=>{const us=U.get().filter(x=>x.id!==u.id);us.push(u);U.set(us);};
+const fbPut=u=>{if(FB.db&&u)FB.fs.setDoc(FB.fs.doc(FB.db,'users',u.id),u).catch(x=>toast(fbErr(x)));};
+function fbErr(x){const c=x&&x.code||'';return({'auth/email-already-in-use':'Ese correo ya tiene cuenta.','auth/weak-password':'La contraseña es muy débil (mínimo 6).','auth/invalid-email':'Correo no válido.','auth/invalid-credential':'Correo o contraseña incorrectos.','auth/wrong-password':'Correo o contraseña incorrectos.','auth/user-not-found':'Correo o contraseña incorrectos.','auth/operation-not-allowed':'Activa Email/Contraseña en Firebase > Authentication.','auth/too-many-requests':'Demasiados intentos. Espera un momento.','permission-denied':'Sin permiso: revisa las reglas de Firestore.'})[c]||('Error: '+(c||(x&&x.message)||x));}
+async function fbInit(){
+  let c;try{c=JSON.parse(S.cfg.fb||DEFAULT_FB);}catch(e){return;}
+  if(!c||!c.apiKey)return;
+  const b='https://www.gstatic.com/firebasejs/10.14.1/';
+  const m=await Promise.all(['firebase-app','firebase-auth','firebase-firestore'].map(n=>import(b+n+'.js')));
+  const app=m[0].initializeApp(c);
+  Object.assign(FB,{au:m[1],fs:m[2],auth:m[1].getAuth(app),db:m[2].getFirestore(app)});
+  FB.au.onAuthStateChanged(FB.auth,async u=>{
+    if(FB.busy)return;
+    if(!u){LS.del('bora-student');return;}
+    if(LS.get('bora-fbt')==='1')return;
+    try{const d=await FB.fs.getDoc(FB.fs.doc(FB.db,'users',u.uid));
+      if(d.exists()){cache(d.data());LS.set('bora-student',u.uid);}else{await FB.au.signOut(FB.auth);LS.del('bora-student');}}catch(e){}
+  });
+}
+async function fbReg(name,em,pw){
+  FB.busy=1;LS.del('bora-fbt');
+  try{const r=await FB.au.createUserWithEmailAndPassword(FB.auth,em,pw),u={id:r.user.uid,name,email:em,status:'none',created:Date.now()};
+    await FB.fs.setDoc(FB.fs.doc(FB.db,'users',u.id),u);cache(u);LS.set('bora-student',u.id);accountModal();
+  }catch(x){toast(fbErr(x));}finally{FB.busy=0;}
+}
+async function fbLogin(em,pw){
+  FB.busy=1;LS.del('bora-fbt');
+  try{const r=await FB.au.signInWithEmailAndPassword(FB.auth,em,pw),d=await FB.fs.getDoc(FB.fs.doc(FB.db,'users',r.user.uid));
+    if(!d.exists()){await FB.au.signOut(FB.auth);toast('Esa cuenta fue eliminada.');return;}
+    cache(d.data());LS.set('bora-student',r.user.uid);accountModal();
+  }catch(x){toast(fbErr(x));}finally{FB.busy=0;}
+}
+function fbTeacherModal(){
+  M={k:'fbt'};
+  openModal('<h2>Conectar con la base de datos</h2><p class="hint" style="margin-bottom:12px">Entra con el correo de la profesora creado en Firebase > Authentication para ver a todos los alumnos.</p><form id="fbtForm"><div class="field"><label for="t-mail">Correo</label><input id="t-mail" type="email" class="inp" required></div><div class="field"><label for="t-pass">Contraseña</label><input id="t-pass" type="password" class="inp" required></div><div class="row"><button class="btn blue" type="submit">Conectar</button><button class="btn ghost" type="button" data-act="close">Cerrar</button></div></form>','t-mail');
+}
+async function panelGo(){
+  if(FB.db){
+    if(!(FB.auth.currentUser&&LS.get('bora-fbt')==='1')){fbTeacherModal();return;}
+    try{const q=await FB.fs.getDocs(FB.fs.collection(FB.db,'users'));U.set(q.docs.map(d=>d.data()));}catch(x){toast(fbErr(x));}
+  }
+  panelModal();
+}
+document.addEventListener('submit',async e=>{
+  const id=e.target.id,v=i=>(($('#'+i)||{}).value||'');
+  if(!FB.db||!/^(regForm|stuForm|fbtForm)$/.test(id))return;
+  e.preventDefault();e.stopImmediatePropagation();
+  if(id==='regForm')fbReg(v('r-name').trim(),v('r-mail').trim().toLowerCase(),v('r-pass'));
+  else if(id==='stuForm')fbLogin(v('r-mail').trim().toLowerCase(),v('r-pass'));
+  else{LS.set('bora-fbt','1');FB.busy=1;
+    try{await FB.au.signInWithEmailAndPassword(FB.auth,v('t-mail').trim(),v('t-pass'));FB.busy=0;panelGo();}
+    catch(x){FB.busy=0;LS.del('bora-fbt');toast(fbErr(x));}}
+},true);
 
 function openNamed(n){
   if(n==='login')loginModal();
@@ -707,7 +773,7 @@ document.addEventListener('submit',async e=>{
   if(id==='loginForm'){
     e.preventDefault();
     const ok=await checkLogin($('#l-user').value.trim(),$('#l-pass').value);
-    if(ok){S.admin=true;LS.set('bora-session','1');closeModal();paintAdmin();panelModal();toast('Bienvenida. Toca cualquier texto para editarlo o «Cambiar imagen» en las fotos.');}
+    if(ok){S.admin=true;LS.set('bora-session','1');closeModal();paintAdmin();panelGo();toast('Bienvenida. Toca cualquier texto para editarlo o «Cambiar imagen» en las fotos.');}
     else toast('Usuario o contraseña incorrectos.');
   }else if(id==='passForm'){
     e.preventDefault();
@@ -730,6 +796,7 @@ document.addEventListener('submit',async e=>{
 $('#yr').textContent=new Date().getFullYear();
 $$('h1,h2,h3,h4,p:not(.ready),.chip,.point b,.point span,.eyebrow,.club li,.sticker,.strip').filter(e=>!e.closest('#payCards,#modal,.sr')).forEach((e,i)=>{e.dataset.t=i;if(S.texts[i]!=null)e.innerHTML=S.texts[i];});
 paintPay();paintImages();paintAdmin();
+fbInit().catch(()=>toast('No se pudo cargar Firebase: revisa la configuración.'));
 })();
 </script>
 </body>
