@@ -440,7 +440,7 @@ function paintAdmin(){
     const b=document.createElement('button');b.type='button';b.className='edit';b.dataset.edit=sl.dataset.slot;b.textContent='Cambiar imagen';b.setAttribute('aria-label','Cambiar imagen: '+DEFAULTS[sl.dataset.slot].label);sl.appendChild(b);
   });
   const bar=$('#adminBar');bar.hidden=!S.admin;
-  bar.innerHTML=S.admin?'<b>Modo administrador</b><span class="hint" style="color:inherit;opacity:.8">Toca cualquier texto para editarlo o «Cambiar imagen» en las fotos.</span><button class="btn sm sun" data-act="panel">Panel</button><button class="btn sm sun" data-act="download">Descargar sitio</button><button class="btn sm" data-act="settings">Ajustes</button><button class="btn sm" data-act="logout">Salir</button>':'';
+  bar.innerHTML=S.admin?'<b>Modo administrador</b><span class="hint" style="color:inherit;opacity:.8">Toca cualquier texto para editarlo o «Cambiar imagen» en las fotos.</span><button class="btn sm sun" data-act="students">Estudiantes</button><button class="btn sm sun" data-act="panel">Panel</button><button class="btn sm sun" data-act="download">Descargar sitio</button><button class="btn sm" data-act="settings">Ajustes</button><button class="btn sm" data-act="logout">Salir</button>':'';
 }
 
 /* ---------- hashing ---------- */
@@ -625,7 +625,7 @@ function panelModal(){
   M={k:'panel'};
   const us=U.get(),ms=jparse(LS.get('bora-msgs'),[]),inc=us.filter(u=>u.status==='paid').reduce((a,u)=>a+(+u.amount||0),0);
   const row=u=>'<div class="point"><b>'+esc(u.name)+' <span class="hint">'+esc(u.email)+'</span></b><span>'+esc(u.course||'Sin curso')+' · '+({none:'Sin pago',pending:'Pago por confirmar ('+esc(u.method||'')+')',paid:'Pagado US$'+(+u.amount||0)})[u.status||'none']+(u.meet?' · Meet '+esc(u.when?new Date(u.when).toLocaleString():'')+' · '+esc(u.code||''):'')+'</span><div class="row" style="margin-top:8px">'+(u.status==='pending'?'<button class="btn sm sun" data-act="confirm" data-id="'+u.id+'">Confirmar pago</button>':'')+(u.status==='paid'?'<button class="btn sm blue" data-act="meet" data-id="'+u.id+'">'+(u.meet?'Regenerar Meet':'Generar clase Meet')+'</button>':'')+'<button class="btn sm ghost" data-act="delUser" data-id="'+u.id+'">Eliminar cuenta</button></div></div>';
-  openModal('<h2>Panel de la profesora</h2><div class="points" style="grid-template-columns:repeat(3,1fr)"><div class="point"><b>US$'+inc+'</b><span>Ingresos</span></div><div class="point"><b>'+us.filter(u=>u.meet).length+'</b><span>Aulas</span></div><div class="point"><b>'+us.length+'</b><span>Cuentas</span></div></div><h3>Alumnos</h3><div class="points">'+(us.map(row).join('')||'<p class="hint">Aún no hay alumnos en este navegador.</p>')+'</div><h3>Mensajes de contacto</h3>'+(ms.slice(-10).reverse().map(m=>'<p class="hint" style="margin-bottom:8px"><b>'+esc(m.name)+'</b> · '+esc(m.email)+(m.wa?' · '+esc(m.wa):'')+'<br>'+esc(m.msg)+'</p>').join('')||'<p class="hint">Sin mensajes.</p>')+'<div id="tpFiles"></div><div class="row" style="margin-top:18px"><button class="btn ghost" data-act="close">Cerrar</button></div>');
+  openModal('<h2>Panel de la profesora</h2><div class="points" style="grid-template-columns:repeat(3,1fr)"><div class="point"><b>US$'+inc+'</b><span>Ingresos</span></div><div class="point"><b>'+us.filter(u=>u.meet).length+'</b><span>Aulas</span></div><div class="point"><b>'+us.length+'</b><span>Cuentas</span></div></div>'+incomeChart(us)+'<h3>Alumnos</h3><div class="points">'+(us.map(row).join('')||'<p class="hint">Aún no hay alumnos en este navegador.</p>')+'</div><h3>Mensajes de contacto</h3>'+(ms.slice(-10).reverse().map(m=>'<p class="hint" style="margin-bottom:8px"><b>'+esc(m.name)+'</b> · '+esc(m.email)+(m.wa?' · '+esc(m.wa):'')+'<br>'+esc(m.msg)+'</p>').join('')||'<p class="hint">Sin mensajes.</p>')+'<div id="tpFiles"></div><div class="row" style="margin-top:18px"><button class="btn ghost" data-act="close">Cerrar</button></div>');
   teacherFiles();
 }
 const upd=(id,f)=>{const us=U.get(),u=us.find(x=>x.id===id);if(u){f(u);U.set(us);fbPut(u);}return u;};
@@ -643,7 +643,7 @@ Object.assign(A,{
     if(FB.db){try{await FB.fs.deleteDoc(FB.fs.doc(FB.db,'users',el.dataset.id));}catch(x){toast(fbErr(x));return;}}
     U.set(U.get().filter(u=>u.id!==el.dataset.id));panelModal();},
   paid(){const c=($('input[name=ec]:checked')||{}).value,m=($('input[name=em]:checked')||{}).value;upd(LS.get('bora-student'),u=>{u.course=c;u.method=m;u.status='pending';u.amount=PRICE[c]||0;});toast('Pago enviado a revisión');accountModal();},
-  confirm(el){const u=U.get().find(x=>x.id===el.dataset.id),a=prompt('Monto recibido (US$)',String(PRICE[u.course]||0));if(a===null)return;upd(u.id,x=>{x.amount=+a||0;x.status='paid';});panelModal();},
+  confirm(el){const u=U.get().find(x=>x.id===el.dataset.id),a=prompt('Monto recibido (US$)',String(PRICE[u.course]||0));if(a===null)return;upd(u.id,x=>{x.amount=+a||0;x.status='paid';x.paidAt=Date.now();});panelModal();},
   meet(el){
     window.open('https://meet.new','_blank','noopener');M={k:'meet',id:el.dataset.id};
     openModal('<h2>Clase de Google Meet</h2><p class="hint" style="margin-bottom:12px">Se abrió Google Meet. Crea la reunión, copia el enlace y pégalo aquí.</p><div class="field"><label for="m-link">Enlace (https://meet.google.com/…)</label><input id="m-link" class="inp" inputmode="url"></div><div class="field"><label for="m-when">Fecha y hora</label><input id="m-when" type="datetime-local" class="inp"></div><div class="row"><button class="btn blue" data-act="meetSave">Guardar clase</button><button class="btn ghost" data-act="panel">Volver</button></div>','m-link');
@@ -812,13 +812,13 @@ async function studentFiles(u){
   const box=$('#filesBox');if(!box)return;
   box.innerHTML='<p class="hint" style="margin-top:14px">Cargando archivos…</p>';
   let mats=[],tasks=[];
-  try{[mats,tasks]=await Promise.all([u.status==='paid'?DB.list('materials'):Promise.resolve([]),DB.list('tasks',u.id)]);}
+  let asg=[];try{[mats,tasks,asg]=await Promise.all([u.status==='paid'?DB.list('materials'):Promise.resolve([]),DB.list('tasks',u.id),DB.list('assignments',u.id)]);}
   catch(x){box.innerHTML='';toast(fbErr(x));return;}
   if(!$('#filesBox'))return;
   box.innerHTML='<h3>Material didáctico</h3>'
     +(u.status!=='paid'?'<p class="hint">Se desbloquea cuando la profesora confirme tu pago.</p>'
-      :'<div class="points">'+(mats.filter(m=>!m.course||m.course==='all'||m.course===u.course).sort(byDate).map(m=>fileRow(m)).join('')||'<p class="hint">Todavía no hay material publicado.</p>')+'</div>')
-    +'<h3>Mis tareas</h3>'+upForm('taskForm','Ej.: Tarea 3, pretérito perfeito','Enviar tarea')
+      :'<div class="points">'+(mats.filter(m=>m.uid?m.uid===u.id:(!m.course||m.course==='all'||m.course===u.course)).sort(byDate).map(m=>fileRow(m)).join('')||'<p class="hint">Todavía no hay material publicado.</p>')+'</div>')
+    +'<h3>Tareas asignadas</h3><div class="points">'+(asg.sort(byDate).map(a=>asgRow(a)).join('')||'<p class="hint">No tienes tareas asignadas.</p>')+'</div><h3>Mis tareas</h3>'+upForm('taskForm','Ej.: Tarea 3, pretérito perfeito','Enviar tarea',asg.length?'<div class="field"><label for="taskForm-a">Responde a</label><select id="taskForm-a" class="inp"><option value="">Otra entrega</option>'+asg.map(a=>'<option value="'+esc(a.id)+'">'+esc(a.title)+'</option>').join('')+'</select></div>':'')
     +'<div class="points">'+(tasks.sort(byDate).map(t=>fileRow(t)).join('')||'<p class="hint">Aún no has enviado tareas.</p>')+'</div>';
 }
 async function teacherFiles(){
@@ -836,12 +836,12 @@ async function teacherFiles(){
 Object.assign(A,{async fbTask(el){
   try{const t=(await DB.list('tasks')).find(x=>x.id===el.dataset.id);if(!t)return;
     const c=prompt('Comentario para '+(t.student||'el alumno'),t.feedback||'');if(c===null)return;
-    t.feedback=c.trim().slice(0,500);await DB.put('tasks',t);toast('Comentario guardado');teacherFiles();
+    t.feedback=c.trim().slice(0,500);await DB.put('tasks',t);toast('Comentario guardado');refreshT();
   }catch(x){toast(fbErr(x));}
 },async delFile(el){
   if(!confirm('¿Quitar este archivo del sitio? (Seguirá en tu biblioteca de Cloudinary.)'))return;
   try{await DB.del(el.dataset.col,el.dataset.id);}catch(x){toast(fbErr(x));return;}
-  teacherFiles();
+  refreshT();
 }});
 document.addEventListener('submit',async e=>{
   const id=e.target.id;if(id!=='matForm'&&id!=='taskForm')return;
@@ -853,16 +853,63 @@ document.addEventListener('submit',async e=>{
   try{
     const r=await cldUp(file,'bora-falar/'+(isTask?'tareas':'materiales'),btn);
     const o={id:rnd(8),title:($('input[type=text]',e.target).value.trim()||file.name),name:file.name,url:r.url,rt:r.rt,bytes:r.bytes,at:Date.now()};
-    if(isTask){o.uid=me.id;o.student=me.name;o.email=me.email;}else{const c=$('select',e.target);o.course=c?c.value:'all';}
+    if(isTask){o.uid=me.id;o.student=me.name;o.email=me.email;const sl=$('select',e.target);if(sl&&sl.value){o.aid=sl.value;if(!$('input[type=text]',e.target).value.trim())o.title=sl.selectedOptions[0].text;}}else if(e.target.dataset.uid){o.uid=e.target.dataset.uid;}else{const c=$('select',e.target);o.course=c?c.value:'all';}
     await DB.put(isTask?'tasks':'materials',o);
     toast(isTask?'Tarea enviada':'Material publicado');
-    if(isTask)studentFiles(me);else teacherFiles();
+    if(isTask)studentFiles(me);else refreshT();
   }catch(x){
     btn.disabled=false;btn.textContent=label;
     const m=x&&x.message;
     toast(m==='cfg'?'Falta Cloudinary: en Ajustes agrega Cloud name y Upload preset.':m==='big'?'El archivo pesa más de 100 MB.':m==='net'?'Sin conexión con Cloudinary. Inténtalo otra vez.':(x&&x.code)?fbErr(x):'No se pudo subir: '+m);
   }
 });
+
+function incomeChart(us){
+  const now=new Date(),ms=[];
+  for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);ms.push({k:d.getFullYear()+'-'+d.getMonth(),l:d.toLocaleDateString('es',{month:'short'}),v:0});}
+  us.filter(u=>u.status==='paid').forEach(u=>{const d=new Date(u.paidAt||u.created||Date.now()),m=ms.find(x=>x.k===d.getFullYear()+'-'+d.getMonth());if(m)m.v+=(+u.amount||0);});
+  const max=Math.max(1,...ms.map(m=>m.v));
+  return '<h3>Ingresos por mes</h3><div role="img" aria-label="Gráfica de ingresos de los últimos 6 meses" style="display:flex;align-items:flex-end;gap:8px;height:140px;margin:10px 0 4px">'
+    +ms.map(m=>'<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%"><span class="hint" style="font-size:12px">US$'+m.v+'</span><div style="width:100%;border-radius:8px 8px 0 0;background:var(--sun);height:'+Math.round(m.v/max*100)+'px;min-height:3px"></div></div>').join('')
+    +'</div><div style="display:flex;gap:8px">'+ms.map(m=>'<span class="hint" style="flex:1;text-align:center">'+m.l+'</span>').join('')+'</div>';
+}
+let CUID=null;
+const refreshT=()=>$('#cvBox')?courseView(CUID):teacherFiles();
+const asgRow=(a,extra)=>'<div class="point"><b>'+esc(a.title)+'</b><span class="hint">'+(a.due?'Entrega: '+esc(a.due):'Sin fecha límite')+'</span>'+(a.desc?'<span style="display:block;margin-top:6px">'+esc(a.desc)+'</span>':'')+'<div class="row" style="margin-top:8px">'+(a.url?'<a class="btn sm blue" href="'+esc(safeUrl(a.url))+'" target="_blank" rel="noopener">Abrir archivo</a>':'')+(extra||'')+'</div></div>';
+function studentsModal(){
+  const us=U.get().sort((a,b)=>(a.name||'').localeCompare(b.name||'')),st={none:'Sin pago',pending:'Pago por confirmar',paid:'Pago confirmado'};
+  openModal('<h2>Mis estudiantes</h2><div class="points">'+(us.map(u=>'<div class="point"><b>'+esc(u.name)+'</b><span class="hint">'+esc(u.course||'Sin curso')+' · '+st[u.status||'none']+'</span><div class="row" style="margin-top:8px"><button class="btn sm blue" data-act="course" data-id="'+esc(u.id)+'">Abrir curso</button></div></div>').join('')||'<p class="hint">Aún no hay alumnos.</p>')+'</div><div class="row" style="margin-top:18px"><button class="btn ghost" data-act="close">Cerrar</button></div>');
+}
+function courseModal(uid){
+  CUID=uid;const u=U.get().find(x=>x.id===uid)||{};
+  openModal('<h2>'+esc(u.name||'Estudiante')+'</h2><p class="hint">'+esc(u.email||'')+' · '+esc(u.course||'Sin curso')+'</p><div id="cvBox"><p class="hint">Cargando…</p></div><div class="row" style="margin-top:18px"><button class="btn ghost" data-act="students">← Estudiantes</button><button class="btn ghost" data-act="close">Cerrar</button></div>');
+  courseView(uid);
+}
+async function courseView(uid){
+  const box=$('#cvBox');if(!box)return;
+  let asg=[],tasks=[],mats=[];
+  try{[asg,tasks,mats]=await Promise.all([DB.list('assignments',uid),DB.list('tasks',uid),DB.list('materials')]);}catch(x){toast(fbErr(x));return;}
+  if(!$('#cvBox'))return;
+  mats=mats.filter(m=>m.uid===uid);
+  const del=(c,f)=>'<button class="btn sm ghost" data-act="delFile" data-col="'+c+'" data-id="'+esc(f.id)+'">Quitar</button>';
+  box.innerHTML='<h3>Asignar tarea</h3><form id="asgForm" class="point" style="margin-bottom:12px"><div class="field"><label for="asg-t">Título</label><input id="asg-t" class="inp" maxlength="80" required></div><div class="field"><label for="asg-d">Instrucciones</label><textarea id="asg-d" class="inp" rows="3" maxlength="600"></textarea></div><div class="field"><label for="asg-due">Fecha de entrega</label><input id="asg-due" type="date" class="inp"></div><div class="field"><label for="asg-f">Archivo (opcional)</label><input id="asg-f" type="file" class="inp" accept="'+ACCEPT+'"></div><button class="btn blue sm" type="submit">Asignar tarea</button></form>'
+    +'<div class="points">'+(asg.sort(byDate).map(a=>asgRow(a,del('assignments',a))).join('')||'<p class="hint">Sin tareas asignadas.</p>')+'</div>'
+    +'<h3>Material para este alumno</h3>'+upForm('matForm','Ej.: Lectura de la semana','Publicar para este alumno').replace('<form id="matForm"','<form id="matForm" data-uid="'+esc(uid)+'"')
+    +'<div class="points">'+(mats.sort(byDate).map(m=>fileRow(m,del('materials',m))).join('')||'<p class="hint">Sin material individual.</p>')+'</div>'
+    +'<h3>Entregas del alumno</h3><div class="points">'+(tasks.sort(byDate).map(t=>fileRow(t,'<button class="btn sm sun" data-act="fbTask" data-id="'+esc(t.id)+'">'+(t.feedback?'Editar comentario':'Comentar')+'</button>'+del('tasks',t))).join('')||'<p class="hint">Aún no ha entregado tareas.</p>')+'</div>';
+}
+document.addEventListener('submit',async e=>{
+  if(e.target.id!=='asgForm'||!S.admin)return;
+  e.preventDefault();
+  const g=i=>$('#'+i).value.trim(),fi=$('#asg-f').files[0],btn=$('button',e.target),lb=btn.textContent;
+  btn.disabled=true;
+  try{
+    const o={id:rnd(8),uid:CUID,title:g('asg-t'),desc:g('asg-d'),due:g('asg-due'),at:Date.now()};
+    if(fi){const r=await cldUp(fi,'bora-falar/tareas-asignadas',btn);Object.assign(o,{url:r.url,name:fi.name,bytes:r.bytes,rt:r.rt});}
+    await DB.put('assignments',o);toast('Tarea asignada');courseView(CUID);
+  }catch(x){btn.disabled=false;btn.textContent=lb;toast(x&&x.code?fbErr(x):x&&x.message==='cfg'?'Falta Cloudinary en Ajustes.':'No se pudo: '+(x&&x.message));}
+});
+Object.assign(A,{students:studentsModal,course:el=>courseModal(el.dataset.id)});
 
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{
